@@ -9,11 +9,11 @@
 #include<iostream>
 #include<memory> //For unique pointers
 
-char[] deleteRepeat(char[], char[], int&);
+std::unique_ptr<char[]> deleteRepeat(char[]);
+const int SIZE = 10;
 
 int main()
 {
-  const int SIZE = 10
   char originalArray[SIZE];
   originalArray [0] = 'a';
   originalArray [1] = 'b';
@@ -28,21 +28,47 @@ int main()
 
   //Print the original array...
   std::cout << "Here is the test case: " << std::endl;
-  for(int i = 0; i < 0; i++)
+  for(int i = 0; i < SIZE; i++)
   {
     std::cout << originalArray[i] << ", "; //Print each element separated by a comma and a space.
   }
   std::cout << std::endl << std::endl;
 
-  char noRepeats[SIZE] = deleteRepeat(originalArray, arrSize);
+  std::unique_ptr<char[]> noRepeats = deleteRepeat(originalArray);
 
   return 0;
 }
 
-char[] deleteRepeat(char originalLetters[], arrSize )
+std::unique_ptr<char[]> deleteRepeat(char originalLetters[] )
 {
-  int pos = 1 //The first letter can never be a duplicate, so the pos
-  char* curChar = originalLetters[1] //Point to the first letter in the sequence.
-  while(pos)
+  //Create a new dynamic array, using constant SIZE to determine initial size.
+  std::unique_ptr<char[]> uniqueChars;
+  uniqueChars = new  char[SIZE];
+  
+  //Append the first original letter to the dyanmic array.
+  int nUniqueChars = 1;
+  uniqueChars[0] = originalLetters[0];
+  
+  //The variable nUniqueChars defines the number and the last position in the dynamic array.
+
+  for(int i = 0; i <= nUniqueChars; ++i) //For every unique letter encountered...
+  {
+   for(int j = 0; j < SIZE; ++j) //For every element in the array passed into the function.
+   {
+     if(originalLetters[j] != uniqueChars[i])
+     {
+       //Append and increment the value of nUniqueChars
+       uniqueChars[nUniqueChars] = originalLetters[j];
+       nUniqueChars++;
+     }
+     else
+     {
+       //Movo.
+     }
+   } 
+  }
+  
+  return uniqueChars;
+ 
 
 }
