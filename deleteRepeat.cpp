@@ -85,8 +85,8 @@ std::unique_ptr<char[]> deleteRepeat(char originalLetters[], int& arrSize)
       if(originalLetters[j] > highestChar) //Check each character and see if its unique...
       {
         highestChar = originalLetters[j]; //Append the letter and set the highest char.
-	uniqueChars[i] = originalLetters[j];
-	break;
+        uniqueChars[i] = originalLetters[j];
+        break;
       }
     }
   }   
