@@ -20,70 +20,99 @@ class Complex
     Complex();
     
     //Constructor used for setting up exact values/
-    Complex();
+    Complex(int, int);
 
     //Pre:  Takes in two complex numbers.
     //Post: Returns a complex number that is the sum of the two inputted.
-    complex add(complex);
+    Complex add(Complex);
 
     //Pre:  Takes in two complex numbers.
     //Post: Returns a complex number that is the difference of the two inputted.
-    complex subtract(complex);
+    Complex subtract(Complex);
 
     //Pre:  Takes in two complex numbers.
     //Post: Returns a complex number that is the product of the two inputted.
-    complex multiply(complex);
+    Complex multiply(Complex);
 
-    //Pre:  Takes in a singluar complex number.
+    //Pre:  Modifies the current complex object. 
     //Post: Returns a string of the complex number.
-    std::string toString(complex);
+    std::string toString();
 
     //Pre:  class Complex
     //Post:
-    complex setComplex(int, int);
-
-    Complex(int, int); //Constructor
+    void setComplexNumber(int, int);
 
   private:
     int realPart;
     int imaginaryPart;
 
-}
+};
 
-complex Complex::add(complex compB)
+Complex::Complex(int a, int b)
 {
-  realPart += compB.realPart; // Add the real part.
-  imaginaryPart += compB.imaginaryPart;// And add the imaginary.
+  realPart = a;
+  imaginaryPart = b;
 }
 
-complex Complex::subtract(complex compB)
+Complex::Complex()
 {
-  realPart -= compB.realPart;
-  imaginaryPart -= compB.imaginaryPart;
+  realPart = 0;
+  imaginaryPart = 0;
 }
 
-complex Complex::multiply(complex compA, complex compB)
+Complex Complex::add(Complex compB)
 {
-    
-
+  Complex obj(int a, int b);
+  a = realPart + compB.realPart; // Add the real part.
+  b = imaginaryPart + compB.imaginaryPart;// And add the imaginary.
+  
+  return obj;
 }
 
-std::string toString(complex num)
+Complex Complex::subtract(Complex compB)
+{
+  Complex obj(int a,int b);
+  a = realPart - compB.realPart; // Subtract the real part.
+  b = imaginaryPart - compB.imaginaryPart; // And subtract the imaginary.
+  
+  return obj;
+}
+
+Complex Complex::multiply(Complex compB)
+{
+  Complex obj(int real,int imagine);
+  int a = realPart * compB.realPart;
+  int b = (realPart * compB.imaginaryPart) + (imaginaryPart * compB.realPart);
+  int c = imaginaryPart * compB.imaginaryPart;
+
+  real = a - c;
+  imagine = b; 
+  
+  return obj;
+}
+
+std::string Complex::toString()
 {
   std::ostringstream stringStream;
-  stringStream << num.realPart << '+' << num.imaginaryPart << 'i'
-  return stringStream;
+  stringStream << realPart << "+" << imaginaryPart << "i";
+  return stringStream.str();
 
 }
 
-complex 
+void Complex::setComplexNumber(int a, int b)
+{
+  realPart = a;
+  imaginaryPart = b;
+
+}
+
 
 int main()
 {
    for (double i = 1; i < 100; ++ i)
    {
-     Complex a{i * 2, i + 2};
-     Complex b{i * 3, i + 3};
+     Complex a(i * 2, i + 2);
+     Complex b(i * 3, i + 3);
 
      Complex c = a.add(b); // invoke add function and assign to object c
      std::cout << "Test case for Complex: add " << std::endl;
@@ -107,7 +136,7 @@ int main()
    }
 
 //  THE FOLLOWING CODE FOR TESTING YOUR OVERLOADING ...
-
+/*
    for (double i = 1; i < 10; ++ i)
    {
      Complex y{i * 2.7, i + 3.2};
@@ -139,7 +168,7 @@ int main()
      }
        std::cout << std::endl;
      }
-
+*/
 return 0;
 
 }
