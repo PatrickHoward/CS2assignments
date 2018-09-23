@@ -1,9 +1,9 @@
 /*
-   COPYRIGHT (C) 2017 Student Name (UANET ID ) All rights reserved.
+   COPYRIGHT (C) 2018 Patrick M. Howard (pmh41) All rights reserved.
    CSII assignment 1
-   Author.  Student Name
-            zippy@zips.uakron.edu
-   Version. 1.01 09.09.2017
+   Author.  Patrick M. Howard
+            pmh41@zips.uakron.edu
+   Version. 1.01 09.22.2018
    Purpose: This program is the test cases for the assignment
 */
 
@@ -16,17 +16,23 @@ class Complex
 {
   public:
 
+    //Default constructor.
+    Complex();
+    
+    //Constructor used for setting up exact values/
+    Complex();
+
     //Pre:  Takes in two complex numbers.
     //Post: Returns a complex number that is the sum of the two inputted.
-    complex add(complex, complex);
+    complex add(complex);
 
     //Pre:  Takes in two complex numbers.
     //Post: Returns a complex number that is the difference of the two inputted.
-    complex subtract(complex, complex);
+    complex subtract(complex);
 
     //Pre:  Takes in two complex numbers.
     //Post: Returns a complex number that is the product of the two inputted.
-    complex multiply(complex, complex);
+    complex multiply(complex);
 
     //Pre:  Takes in a singluar complex number.
     //Post: Returns a string of the complex number.
@@ -44,26 +50,21 @@ class Complex
 
 }
 
-complex Complex::add(complex compA, complex compB)
+complex Complex::add(complex compB)
 {
-  //I figured its a little more efficient to just modify a single object instead of creating a brand new one.
-  compA.realPart += compB.realPart; // Add the real part.
-  compA.imaginaryPart += compB.imaginaryPart;// And add the imaginary.
-
-  return compA;
+  realPart += compB.realPart; // Add the real part.
+  imaginaryPart += compB.imaginaryPart;// And add the imaginary.
 }
 
-complex Complex::subtract(complex compA, complex compB)
+complex Complex::subtract(complex compB)
 {
-  compA.realPart -= compB.realPart;
-  compA.imaginaryPart -= compB.imaginaryPart;
-
-  return compA;
+  realPart -= compB.realPart;
+  imaginaryPart -= compB.imaginaryPart;
 }
 
 complex Complex::multiply(complex compA, complex compB)
 {
-
+    
 
 }
 
@@ -75,6 +76,7 @@ std::string toString(complex num)
 
 }
 
+complex 
 
 int main()
 {
