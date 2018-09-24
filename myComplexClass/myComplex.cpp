@@ -1,6 +1,6 @@
 /*
    COPYRIGHT (C) 2018 Patrick M. Howard (pmh41) All rights reserved.
-   CSII assignment 1
+   CSII assignment B
    Author.  Patrick M. Howard
             pmh41@zips.uakron.edu
    Version. 1.12 09.24.2018
@@ -16,21 +16,21 @@ class Complex
 {
   public:
 
-    //Default constructor.
+    //Default constructor. Sets the object to zero.
     Complex();
     
-    //Constructor used for setting up exact values/
+    //Constructor used for setting up exact values
     Complex(int, int);
 
-    //Pre:  Takes in two complex numbers.
+    //Pre:  Takes in a single complex object.
     //Post: Returns a complex number that is the sum of the two inputted.
     Complex add(Complex);
 
-    //Pre:  Takes in two complex numbers.
+    //Pre:  Takes in a single complex object.
     //Post: Returns a complex number that is the difference of the two inputted.
     Complex subtract(Complex);
 
-    //Pre:  Takes in two complex numbers.
+    //Pre:  Takes in a single complex object
     //Post: Returns a complex number that is the product of the two inputted.
     Complex multiply(Complex);
 
@@ -39,32 +39,45 @@ class Complex
     std::string toString();
 
     //Pre:  Takes two integers
-    //Post:
+    //Post: Does not return anything, but modifies
     void setComplexNumber(int, int);
 
-    //
+    //Pre:  Takes in a single Complex object
+    //Post: Returns a complex number that is the sum of the two added.
     Complex operator+ (Complex);
+
+    //Pre:  Takes in a single Complex object
+    //Post: Returns a complex number that is the difference of the two subtracted.
     Complex operator- (Complex);
+
+    //Pre:  Takes in a single Complex object
+    //Post: Returns a complex number that is the product of the two multiplied.
     Complex operator* (Complex);
+
+    //Pre:  Takes in a single Complex object
+    //Post: Returns a boolean based on the inequality of the two complex objects compared
     bool operator!=   (Complex); 
+
+    //Pre:  Takes in a single Complex object
+    //Post: Returns a boolean based on the equality of the two complex objects compared
     bool operator==   (Complex);
   
   private:
-    int realPart;
-    int imaginaryPart;
+    int realPart; //Real half of a complex number.
+    int imaginaryPart; //Imaginary half multiplied by i.
 
 };
 
-Complex::Complex(int a, int b)
+Complex::Complex() //Default constructor
+{
+  realPart = 0;
+  imaginaryPart = 0; 
+}
+
+Complex::Complex(int a, int b) //Specific constructor
 {
   realPart = a;
   imaginaryPart = b;
-}
-
-Complex::Complex()
-{
-  realPart = 0;
-  imaginaryPart = 0;
 }
 
 Complex Complex::add(Complex compB)
@@ -85,16 +98,16 @@ Complex Complex::subtract(Complex compB)
   return obj;
 }
 
-Complex Complex::multiply(Complex compB)
+Complex Complex::multiply(Complex compB) //This uses FOIL and then assigns the appropriate values.
 {
   Complex obj;
   
-  int a = realPart * compB.realPart;
-  int b = (realPart * compB.imaginaryPart) + (imaginaryPart * compB.realPart);
-  int c = imaginaryPart * compB.imaginaryPart;
+  int a = realPart * compB.realPart; //First
+  int b = (realPart * compB.imaginaryPart) + (imaginaryPart * compB.realPart);//Inner & Outer
+  int c = imaginaryPart * compB.imaginaryPart;//Last
 
-  obj.realPart = a - c;
-  obj.imaginaryPart = b; 
+  obj.realPart = a - c; //This is subtracted since i squared is (-1)
+  obj.imaginaryPart = b; //Assigned the imaginary part.
   
   return obj;
 }
@@ -109,14 +122,14 @@ std::string Complex::toString()
 
 void Complex::setComplexNumber(int a, int b)
 {
-  realPart = a;
-  imaginaryPart = b;
+  realPart = a; //Assign the real.
+  imaginaryPart = b;//Assign the imaginary.
 
 }
 
 Complex Complex::operator+(Complex compB)
 {
-  return this->add(compB);
+  return this->add(compB);//Basically pas
 }
 
 Complex Complex::operator-(Complex compB)
@@ -131,16 +144,6 @@ Complex Complex::operator*(Complex compB)
 
 bool Complex::operator!=(Complex compB)
 {
-  /*
-  if(realPart != compB.realPart || imaginaryPart != compB.imaginaryPart)
-  {
-    return true;
-  }
-  else
-  {
-    return false;
-  }*/
-
   return ((realPart != compB.realPart || imaginaryPart != compB.imaginaryPart) ? true:false);
 }
 
@@ -178,7 +181,7 @@ int main()
    }
 
 //  THE FOLLOWING CODE FOR TESTING YOUR OVERLOADING ...
-/*
+
    for (double i = 1; i < 10; ++ i)
    {
      Complex y{i * 2.7, i + 3.2};
@@ -210,7 +213,6 @@ int main()
      }
        std::cout << std::endl;
      }
-*/
 return 0;
 
 }
