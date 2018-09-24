@@ -38,7 +38,7 @@ class Complex
     //Post: Returns a string of the complex number.
     std::string toString();
 
-    //Pre:  class Complex
+    //Pre:  Takes two integers
     //Post:
     void setComplexNumber(int, int);
 
@@ -62,31 +62,32 @@ Complex::Complex()
 
 Complex Complex::add(Complex compB)
 {
-  Complex obj(int a, int b);
-  a = realPart + compB.realPart; // Add the real part.
-  b = imaginaryPart + compB.imaginaryPart;// And add the imaginary.
+  Complex obj;
+  obj.realPart = realPart + compB.realPart; // Add the real part.
+  obj.imaginaryPart = imaginaryPart + compB.imaginaryPart;// And add the imaginary.
   
   return obj;
 }
 
 Complex Complex::subtract(Complex compB)
 {
-  Complex obj(int a,int b);
-  a = realPart - compB.realPart; // Subtract the real part.
-  b = imaginaryPart - compB.imaginaryPart; // And subtract the imaginary.
-  
+  Complex obj;
+  obj.realPart = realPart - compB.realPart; // Subtract the real part.
+  obj.imaginaryPart = imaginaryPart - compB.imaginaryPart; // And subtract the imaginary.
+ 
   return obj;
 }
 
 Complex Complex::multiply(Complex compB)
 {
-  Complex obj(int real,int imagine);
+  Complex obj;
+  
   int a = realPart * compB.realPart;
   int b = (realPart * compB.imaginaryPart) + (imaginaryPart * compB.realPart);
   int c = imaginaryPart * compB.imaginaryPart;
 
-  real = a - c;
-  imagine = b; 
+  obj.realPart = a - c;
+  obj.imaginaryPart = b; 
   
   return obj;
 }
