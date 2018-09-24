@@ -3,7 +3,7 @@
    CSII assignment 1
    Author.  Patrick M. Howard
             pmh41@zips.uakron.edu
-   Version. 1.01 09.22.2018
+   Version. 1.12 09.24.2018
    Purpose: This program is the test cases for the assignment
 */
 
@@ -42,6 +42,13 @@ class Complex
     //Post:
     void setComplexNumber(int, int);
 
+    //
+    Complex operator+ (Complex);
+    Complex operator- (Complex);
+    Complex operator* (Complex);
+    bool operator!=   (Complex); 
+    bool operator==   (Complex);
+  
   private:
     int realPart;
     int imaginaryPart;
@@ -107,6 +114,40 @@ void Complex::setComplexNumber(int a, int b)
 
 }
 
+Complex Complex::operator+(Complex compB)
+{
+  return this->add(compB);
+}
+
+Complex Complex::operator-(Complex compB)
+{
+  return this->subtract(compB);
+}
+
+Complex Complex::operator*(Complex compB)
+{
+  return this->multiply(compB);
+}
+
+bool Complex::operator!=(Complex compB)
+{
+  /*
+  if(realPart != compB.realPart || imaginaryPart != compB.imaginaryPart)
+  {
+    return true;
+  }
+  else
+  {
+    return false;
+  }*/
+
+  return ((realPart != compB.realPart || imaginaryPart != compB.imaginaryPart) ? true:false);
+}
+
+bool Complex::operator==(Complex compB)
+{
+   return ((realPart == compB.realPart && imaginaryPart == compB.imaginaryPart) ? true:false);
+}
 
 int main()
 {
