@@ -3,8 +3,9 @@
    CSII assignment B
    Author.  Patrick M. Howard
             pmh41@zips.uakron.edu
-   Version. 1.12 09.24.2018
-   Purpose: This program is the test cases for the assignment
+   Version. 2.0 09.25.2018
+   Purpose: This program takes and tests the Complex class and evaluates 
+            a series of complex objects created.
 */
 
 #include <iostream>
@@ -20,7 +21,7 @@ class Complex
     Complex();
 
     //Constructor used for setting up exact values
-    Complex(double&, double&);
+    Complex(double, double);
 
     //Pre:  Takes in a single complex object.
     //Post: Returns a complex number that is the sum of the two inputted.
@@ -40,7 +41,7 @@ class Complex
 
     //Pre:  Takes two integers
     //Post: Does not return anything, but modifies the current object.
-    void setComplexNumber(double&, double&);
+    void setComplexNumber(double, double);
 
     //Pre:  Takes in a single Complex object
     //Post: Returns a complex number that is the sum of the two added.
@@ -65,13 +66,14 @@ class Complex
     friend std::istream& operator>> (std::istream& is, Complex& compB)
     {
       std::string strRealPart, strImaginaryPart;
-      std::stringstream stringStream;
-      is >> strRealPart;
-      is >> strImaginaryPart;
-      stringStream << strRealPart.substr(1, strRealPart.length()-2);
+      std::stringstream stringStream; //New stringstream object
+
+      is >> strRealPart >> strImaginaryPart; //Output the uncleaned strings to their appropriate variables
+
+      stringStream << strRealPart.substr(1, strRealPart.length()-2); //Clean and input the real protion
       stringStream >> compB.realPart;
 
-      stringStream << strImaginaryPart.substr(0, strImaginaryPart.length()-1);
+      stringStream << strImaginaryPart.substr(0, strImaginaryPart.length()-1); //Clean and input the imaginary portion.
       stringStream >> compB.imaginaryPart;
 
       return is;
@@ -79,8 +81,8 @@ class Complex
 
     friend std::ostream& operator<< (std::ostream& os, Complex& compB)
     {
-      os << compB.realPart << " + " << compB.imaginaryPart << "i";
-
+      os << compB.realPart << (compB.imaginaryPart > 0 ? "+": "") << compB.imaginaryPart << "i";
+      //os << toString(compB);
       return os;
     }
 
@@ -96,7 +98,7 @@ Complex::Complex() //Default constructor
   imaginaryPart = 0;
 }
 
-Complex::Complex(double& a, double& b) //Specific constructor
+Complex::Complex(double a, double b) //Specific constructor
 {
   realPart = a;
   imaginaryPart = b;
@@ -136,35 +138,32 @@ Complex Complex::multiply(Complex& compB) //This uses FOIL and then assigns the 
 
 std::string Complex::toString()
 {
-
   std::ostringstream stringStream;
-  stringStream << realPart << "+" << imaginaryPart << "i";
+  stringStream << realPart << (imaginaryPart > 0 ? "+":"") << imaginaryPart << "i";//It was irking me, so I fixed it so that the negative will be the only symbol present.`
   return stringStream.str();
-
 }
 
 
 
-void Complex::setComplexNumber(double& a, double& b)
+void Complex::setComplexNumber(double a, double b)
 {
   realPart = a; //Assign the real.
   imaginaryPart = b;//Assign the imaginary.
-
 }
 
 Complex Complex::operator+(Complex& compB)
 {
-  return this->add(compB);//Basically pas
+  return this->add(compB);//Basically passes the objects to the Complex::add method.
 }
 
 Complex Complex::operator-(Complex& compB)
 {
-  return this->subtract(compB);
+  return this->subtract(compB);//Basically passes the objects to the Complex::subtract method.
 }
 
 Complex Complex::operator*(Complex& compB)
 {
-  return this->multiply(compB);
+  return this->multiply(compB);//Basically passes the objects to the Complex::multiply method.
 }
 
 bool Complex::operator!=(Complex& compB)
@@ -176,14 +175,6 @@ bool Complex::operator==(Complex& compB)
 {
    return ((realPart == compB.realPart && imaginaryPart == compB.imaginaryPart) ? true:false);
 }
-
-
-// std::ostream& Complex::operator<<(std::ostream& os, Complex& compB)
-// {
-//   os << compB.realPart << " + " << compB.imaginaryPart << "i";
-//
-//   return os;
-// }
 
 int main()
 {
