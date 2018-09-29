@@ -3,7 +3,7 @@
 #include<cstdlib>//For rand()  
 #include<iomanip>//For manipulating the input! Yay!
 #include<string>//For strings (wow)
-#include<memory>
+#include<limits>
 /*
   PROJECT PART A - Patrick M. Howard (pmh41) - LabTrac
   Copyright 2018, all rights reserved. 
@@ -52,6 +52,12 @@ void printMenu();
 //Searches the provided multidimensional array for the user ID number.
 Computer search(int);
 
+void scrub(std::istream& is)
+{
+  is.clear();
+  is.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
+
 int main()
 {
   srand(time(NULL)); //Set the seed for random IDs.
@@ -80,20 +86,68 @@ int main()
   while(active)
   {
     int choice; 
-    std::cout << "| > " 
+    std::cout << "| > "; 
     std::cin >> choice;
 
     if(std::cin.fail() || choice == 0 || choice > 5)
     {
       //Invalid input, clear and clean the buffer.
       std::cin.clear();
-      std::cin.ignore(numeric_limits<std::streamsize)::max(), '\n'
-    }
-    
-    switch choice
+      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+      
+    } 
+    switch(choice)
     {
       case 1: 
-        break;
+      { int labSelection;
+        int computerAssignment;
+
+        //Get the lab
+        bool invalidSelection = true;
+        while(invalidSelection)
+        {
+          std::cout << "| For which lab? (1 - " << NUMLABS << ") > ";
+	  std::cin >> labSelection;
+
+          if(std::cin.fail() || labSelection <= 0 || labSelection > NUMLABS)
+          {
+            std::cout << "| Invalid input, please try again.\n";
+            //Invalid input, cleaning buffer.
+            std::cin.clear();
+	    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+          }
+          else
+          {
+            invalidSelection = false;
+          }
+        }
+
+        std::cout << "| Selected " << UNIVERSITYNAMES[labSelection-1] << "!\n";
+
+        invalidSelection = true;
+        while(invalidSelection)
+        {
+          std::cout << "| Select the seat assignment (1 - " << LABSIZES[labSelection-1] << ") > ";
+	  std::cin >> computerAssignment;
+
+          if(std::cin.fail() || computerAssignment <= 0 || computerAssignment > LABSIZES[labSelection-1])
+          {
+            std::cout << "| Invalid input, please try again.\n";
+            //Invalid input, cleaning buffer.
+            std::cin.clear();
+	    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 
+          }
+          else
+          {
+            invalidSelection = false;
+          }
+        }
+
+        //
+        labArray[labSelection-1][computerAssignment-1].login();
+        
+      }
+      break;
       case 2:
         break;
       case 3:
@@ -101,9 +155,16 @@ int main()
       case 4:
         break;
       case 5:
+      {
         std::cout << "| Exiting program, goodbye!\n";
         active = false;
-        
+      }
+      break;
+      default: 
+      {
+        std::cout << "| Invalid input, please try again.\n";
+        scrub(std::cin);
+      }
     }
   }
 }
@@ -119,21 +180,19 @@ void Computer::login()
 {
   //Call mkID and assign userID.
   userID = mkID();
-
+  std::cout << "| Assigned user to: " << std::setfill('0') << std::setw(5) << userID << "\n" << std::setfill(' ');
   //Now to assign the name...  
   bool invalidInput = true; //Unlike the American judicial system, invalid until proven valid.
   while(invalidInput)//Check to make sure the name is less than 35 characters 
   {
     std::cout << "| Please input a name (max 35 chars) > ";
-    std::cin >> studentName;
-    
-    if(std::cin.fail() || studentName.length() > 35 || studentName.length() == 0)
+    std::getline(std::cin, studentName);
+
+    if(studentName.length() > 35 || studentName.length() == 0)
     { 
       //Input is deemed invalid, clean the buffer and try again.
       std::cout << "| Invalid input, please try again.\n";
-      
-      std::cin.clear();
-      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+      scrub(std::cin);
     }
     else
     {
@@ -145,21 +204,22 @@ void Computer::login()
   //And time... Now this can only be set in 15 minute increments...
   invalidInput = true; //I'm recycling this...
   while(invalidInput)
-  {
+  { 
+    scrub(std::cin);
+
     std::cout << "| Please input time used (15/30/45/60) > ";
     std::cin >> timeUsed;
     
-    if(std::cin.fail() || timeUsed > 60 || timeUsed % 15 == 0)
+    if(std::cin.fail() || timeUsed > 60 || timeUsed % 15 != 0)
     {
       //Invalid is deemed invalid, clean the buffer and try agian. 
       std::cout << "| Invalid input, please try again.\n";
      
-      std::cin.clear();
-      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+      scrub(std::cin);
     }
     else
     {
-      //Valid input, set invalidInput to true and move on.
+      //Valid input, set invalidInput to false and move on.
       invalidInput = false;
     } 
   } 
@@ -201,8 +261,7 @@ void printMenu()
   std::cout << "| MAIN MENU\n";
   for(int i = 0; i < 5; ++i)
   {
-    std::cout << "| " << i << ") " << menuOptions[i] << "\n";
+    std::cout << "| " << i+1 << ") " << menuOptions[i] << "\n";
   }
-
   
 }
