@@ -48,7 +48,9 @@ class Computer
 
 Computer::Computer()
 {
-  
+  userID = -1;
+  studentName = "empty";
+  timeUsed = 0;
 }
 
 void Computer::login()
@@ -56,6 +58,16 @@ void Computer::login()
   //Call mkID
   
   
+}
+
+void Computer::logout()
+{
+
+}
+
+int mkID()
+{
+  return rand()&9999;
 }
 
 
