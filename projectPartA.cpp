@@ -9,7 +9,8 @@
   Copyright 2018, all rights reserved. 
   pmh41@zips.uakron.edu
   ver 0.34 9.28.2018
-  Purpose: 
+  Purpose: This program manages computer labs for several different universities. It can sign on, sign off users and keep track of 
+           where they are in the system. 
 */
 
 //Global Constants
@@ -31,11 +32,18 @@ class Computer
     void login();
     void logout();
     
+    //mkID randomly generates a new ID number from 1-99999 and returns it.
     int mkID();
     
+    //I created some accessor and mutator functions, just in case I needed them...
     int getID();
     std::string getStudentName();
     
+    //Mutator functions.
+    void assignID(int);
+    void assignStudentName(std::string);
+    void assignTime(int);
+
   private:
     int userID; //Randomly generates 5 digit ID numbers upon login.
     std::string studentName; //Maximum 35 characters
@@ -52,6 +60,7 @@ void printMenu();
 //Searches the provided multidimensional array for the user ID number.
 Computer search(int);
 
+//Clears the entire line of an input during input verification. 
 void scrub(std::istream& is)
 {
   is.clear();
@@ -67,14 +76,14 @@ int main()
   //Print all available labs
   for(int i = 0; i < NUMLABS-1; ++i)
   {
-    std::cout << "| Lab #" << i << " for " << UNIVERSITYNAMES[i] << "\n";
+    std::cout << "| Lab #" << i+1 << " for " << UNIVERSITYNAMES[i] << "\n";
   }
   std::cout << "| Lab #" << NUMLABS << " for " << UNIVERSITYNAMES[NUMLABS - 1] << "\n\n";
 
   printMenu(); //Print available options.
   
   //Now, lets go ahead and write the array for the labs.
-  static Computer* labArray[NUMLABS]; 
+  Computer* labArray[NUMLABS]; 
   
   //Loop through and set up the dynamic arrays. 
   for(int i = 0; i < NUMLABS; ++i)
@@ -82,6 +91,7 @@ int main()
     labArray[i] = new Computer[LABSIZES[i]];
   }
   
+  //Goes through the main menu.
   bool active = true;
   while(active)
   {
@@ -92,13 +102,13 @@ int main()
     if(std::cin.fail() || choice == 0 || choice > 5)
     {
       //Invalid input, clear and clean the buffer.
-      std::cin.clear();
-      std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-      
-    } 
+      scrub(std::cin);
+    }
+
+    //I cant seem to get the labArray to "pass" to another function, so for now I put everything in the switch statement. 
     switch(choice)
     {
-      case 1: 
+      case 1: //Simulate a login 
       { int labSelection;
         int computerAssignment;
 
@@ -113,17 +123,17 @@ int main()
           {
             std::cout << "| Invalid input, please try again.\n";
             //Invalid input, cleaning buffer.
-            std::cin.clear();
-	    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
           }
           else
           {
             invalidSelection = false;
           }
+          scrub(std::cin);
         }
 
         std::cout << "| Selected " << UNIVERSITYNAMES[labSelection-1] << "!\n";
-
+        
+        //Get the computer assignment.
         invalidSelection = true;
         while(invalidSelection)
         {
@@ -134,25 +144,110 @@ int main()
           {
             std::cout << "| Invalid input, please try again.\n";
             //Invalid input, cleaning buffer.
-            std::cin.clear();
-	    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); 
           }
           else
           {
             invalidSelection = false;
           }
+          scrub(std::cin);
         }
-
-        //
-        labArray[labSelection-1][computerAssignment-1].login();
-        
+        labArray[labSelection-1][computerAssignment-1].login();//Call the login method for the selected object.
       }
       break;
       case 2:
+        {
+          bool invalidInput = true;
+          int userID;
+          while(invalidInput)
+          {
+            std::cout << "| Input the User ID to logout > ";
+            std::cin >> userID;
+          
+            if(std::cin.fail() || userID < 1 || userID > 99999)
+            {
+              std::cout << "| Invalid input, please try again.\n";
+              scrub(std::cin);
+            }
+            else
+            {
+              invalidInput = false;
+            }
+          }
+          
+          for(int i = 0; i < NUMLABS; ++i)
+          {
+            for(int j = 0; j < LABSIZES[i]; ++j)
+            {
+              if(labArray[i][j].getID() == userID)
+              {
+                labArray[i][j].logout();
+              }
+            }
+          }
+        }
         break;
-      case 3:
+      case 3://Search each lab.
+        {
+          bool invalidInput = true;
+          int userID;
+          while(invalidInput)
+          {
+            std::cout << "| Input the User ID to logout > ";
+            std::cin >> userID;
+
+            if(std::cin.fail() || userID < 1 || userID > 99999)
+            {
+              std::cout << "| Invalid input, please try again.\n";
+              scrub(std::cin);
+            }
+            else
+            {
+              invalidInput = false;
+            }
+          }
+
+          for(int i = 0; i < NUMLABS; ++i)
+          {
+            for(int j = 0; j < LABSIZES[i]; ++j)
+            {
+              if(labArray[i][j].getID() == userID)
+              {
+                std::cout << "| Found " << labArray[i][j].getStudentName() << " in lab " << i+1 << " at computer " << j+1 << ". \n";
+              }
+            }
+          }
+        }
         break;
-      case 4:
+      case 4: //Display a lab.
+        {
+          int labSelection;
+          bool invalidInput = true;
+            scrub(std::cin);
+          while(invalidInput)
+          {
+            std::cout << "| Which lab do you want to display? (1 - " << NUMLABS << ") > ";
+            std::cin >> labSelection;
+          
+            if(std::cin.fail() || labSelection > NUMLABS || labSelection <= 0)
+            {
+              std::cout << "| Invalid input, please try again!\n";
+              //Invalid input, scrubbing...
+            }
+            else
+            {
+              invalidInput = false;
+            }
+            scrub(std::cin);
+          }
+          
+          std::cout << "| Selected " << UNIVERSITYNAMES[labSelection-1] << "\n";
+          for(int i = 0; i <= LABSIZES[labSelection-1]; ++i)
+          { //Theres a segmentation issue, and I cant figure it out for the life of me... Still working on it. 
+            std::cout << i+1 << ": " 
+                      << (labArray[labSelection-1][i].getID() != -1 ? std::to_string(labArray[labSelection-1][i].getID()) :"empty") 
+                      << " " << (i % 5 == 0 ? "\n" : NULL);
+          }
+        }
         break;
       case 5:
       {
@@ -181,10 +276,13 @@ void Computer::login()
   //Call mkID and assign userID.
   userID = mkID();
   std::cout << "| Assigned user to: " << std::setfill('0') << std::setw(5) << userID << "\n" << std::setfill(' ');
+
+
   //Now to assign the name...  
   bool invalidInput = true; //Unlike the American judicial system, invalid until proven valid.
   while(invalidInput)//Check to make sure the name is less than 35 characters 
   {
+
     std::cout << "| Please input a name (max 35 chars) > ";
     std::getline(std::cin, studentName);
 
@@ -205,8 +303,6 @@ void Computer::login()
   invalidInput = true; //I'm recycling this...
   while(invalidInput)
   { 
-    scrub(std::cin);
-
     std::cout << "| Please input time used (15/30/45/60) > ";
     std::cin >> timeUsed;
     
@@ -222,12 +318,13 @@ void Computer::login()
       //Valid input, set invalidInput to false and move on.
       invalidInput = false;
     } 
+    std::cout << "| Assigned " << studentName << " to user# " << userID << ".\n";
   } 
 }
 
 void Computer::logout()
 {
-  std::cout << "| " << studentName << " has been signed out.";
+  std::cout << "| " << studentName << " has been signed out. \n";
 
   //Reassign initial values.
   userID = -1;
@@ -243,6 +340,15 @@ int Computer::getID()
 
 std::string Computer::getStudentName()
 {return studentName;}
+
+void Computer::assignID(int id)
+{userID = id;}
+
+void Computer::assignStudentName(std::string name)
+{studentName = name;}
+
+void Computer::assignTime(int time)
+{timeUsed = time;  }  
 
 void printHeader()
 {
