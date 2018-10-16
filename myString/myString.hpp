@@ -1,7 +1,13 @@
 #pragma once
 
-#include <climits>
-#include <cstring>
+/*
+    String Class by Patrick M. Howard - pmh41
+    pmh41@zips.uakron.edu
+    COPYRIGHT(C) 2018 Patrick M. Howard
+*/
+
+#include <cstdint>
+#include <limits>
 
 class MyString
 {
@@ -18,6 +24,8 @@ public:
 
     void operator=(const char* literal);
 
+    void operator=(const MyString& s);
+
     void operator+=(const MyString& s);
 
     bool empty() const;
@@ -30,9 +38,11 @@ public:
 
     std::size_t find(char c) const;
 
-    MyString MyString::substr(int startPos, int length);
+    MyString substr(int startPos, int length) const;
 
-    bool operator==(const MyString&s) const;
+    bool operator==(const MyString& s) const;
+
+    bool operator!=(const MyString& s) const;
 
     bool operator<(const MyString& s) const;
 

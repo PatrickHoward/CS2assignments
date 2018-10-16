@@ -1,11 +1,13 @@
 /*
     String Class by Patrick M. Howard - pmh41
-
+    pmh41@zips.uakron.edu
+    COPYRIGHT(C) 2018 Patrick M. Howard
 */
 
-#include "myString.hpp"
+#include "MyString.hpp"
 #include <cstring>
 #include <cassert>
+#include <iostream>
 
 MyString::MyString()
 {
@@ -16,9 +18,10 @@ MyString::MyString()
 
 MyString::MyString(const char* literal)
 {
-    str = new char[1];
-    str[0] = '\0';
-    length = 0;
+    length = strlen(literal);
+    str = new char[length +1];
+    
+    assign(literal);
 }
 
 MyString::MyString(const char* literal, int n)
@@ -36,12 +39,19 @@ MyString::MyString(const char* literal, int n)
 
 MyString::MyString(const MyString& s)
 {
+    cleanup();
     assign(s.str);
 }
 
 void MyString::operator=(const char* literal)
 {
     assign(literal);
+}
+
+void MyString::operator=(const MyString& s)
+{
+    cleanup();
+    assign(s.str);
 }
 
 void MyString::operator+=(const MyString& s)
@@ -52,7 +62,7 @@ void MyString::operator+=(const MyString& s)
     strcpy(newStr, str);
     strcat(newStr, s.str);
 
-    delete [] str;
+    cleanup();
 
     str = newStr;
     length = newLength;
@@ -70,7 +80,8 @@ std::size_t MyString::size() const
 
 char& MyString::operator[](std::size_t index) const
 {
-    assert(index < length && index >= 0);
+    assert(index < length);
+    assert(index >= 0);
 
     return str[index];
 }
@@ -89,17 +100,22 @@ std::size_t MyString::find(char c) const
         : ptr - str;
 }
 
-MyString MyString::substr(int startPos, int length)
+MyString MyString::substr(int startPos, int length) const
 {
-    assert(startPos >= 0 && startPos < length);
+    assert(startPos >= 0);
     assert(length >= 0);
 
     return MyString(str + startPos, length);
 }
 
-bool MyString::operator==(const MyString& s ) const
+bool MyString::operator==(const MyString& s) const
 {
     return strcmp(str, s.str) == 0;
+}
+
+bool MyString::operator!=(const MyString& s) const
+{
+    return strcmp(str, s.str) != 0;
 }
 
 bool MyString::operator<(const MyString& s) const
