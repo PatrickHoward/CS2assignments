@@ -134,7 +134,7 @@ MyString MyString::operator+(const MyString& s) const
 
 MyString::~MyString()
 {
-    this.cleanup();
+    cleanup();
 }
 
 void MyString::assign(const char* value)
