@@ -6,7 +6,7 @@ struct Menu
 {
     void printHeader();
  
-    void printLabs(const std::string labs[], int numLabs) const;   
+    void printLabs(const std::string labs[]), int numLabs);
  
     void printMenu();
 };

@@ -1,15 +1,23 @@
-#include<iostream>
+#include <iostream>
+#include <string>
 
 #include "Menu.hpp"
 
+using namespace std;
+
 void Menu::printHeader()
 {
-  std::cout << std::setw(60) << " ___________________________________________________________\n"
-            << "|----------------------------------------------------------|\n"
-            << "|                         LabTrac                          |\n"
-            << "|            Student Computer Lab Tracking System          |\n"
-            << "|__________________________________________________________|\n"
-            << "|\n";
+  cout << "|-- LabTrac 2 - Student Computer Lab Tracking System --|\n"
+       << "|-- Created by Patrick M. Howard - For education use --|\n";
+
+}
+
+void Menu::printLabs(const string labs[], int numLabs)
+{
+  for(int i = 0; i < numLabs; ++i)
+  {
+    std::cout << "| Lab #" << i+1 << " for " << labs[i] << "\n";
+  }
 }
 
 void Menu::printMenu()
