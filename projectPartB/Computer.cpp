@@ -17,7 +17,7 @@ Computer::Computer()
 void Computer::login()
 {
   //Call mkID and assign userID.
-  userID = mkID();
+  userID = makeID();
   std::cout << "| Assigned user to: " << std::setfill('0') << std::setw(5) << userID << "\n" << std::setfill(' ');
 
 
@@ -75,20 +75,32 @@ void Computer::logout()
   timeUsed = 0;
 }
 
-int Computer::mkID()
-{return rand()%99999;}
+int Computer::makeID()
+{
+  return rand()%99999;
+}
 
 int Computer::getID()
-{return userID;}
+{
+  return userID;
+}
 
 std::string Computer::getStudentName()
-{return studentName;}
+{
+  return studentName;
+}
 
-void Computer::assignID(int id)
-{userID = id;}
+void Computer::assignID(int userID_)
+{
+  userID = userID_;
+}
+void Computer::assignStudentName(std::string studentName_)
+{
+  studentName = studentName_;
+}
 
-void Computer::assignStudentName(std::string name)
-{studentName = name;}
 
-void Computer::assignTime(int time)
-{timeUsed = time;  }
+void Computer::assignTime(int timeUsed_)
+{
+  timeUsed = timeUsed_;
+}
