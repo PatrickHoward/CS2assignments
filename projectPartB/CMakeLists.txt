@@ -3,5 +3,7 @@ project(LabTrac)
 
 add_executable(labTrac 
                 projectPartB.cpp
-                Menu.cpp)
+                ioHandiling.cpp
+                Computer.cpp
+                )
 

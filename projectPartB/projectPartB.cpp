@@ -9,7 +9,6 @@
 
 #include <string>
 #include <iostream>
-
 #include <cstdlib>
 #include <ctime>
 
@@ -20,7 +19,7 @@
 //Number of computer Labs
 const int NUMLABS = 8;
 //Number of computers in each lab;
-const int LABSIZES[NUMLABS] = {19, 15, 24, 33, 61, 17, 55, 37};
+const int LABSIZES[NUMLABS] = {19, 15, 24, 33, 4, 17, 55, 37};
 
 //Universities currently under constract.
 const std::string UNIVERSITYNAMES[NUMLABS] = {"The University of Michigan", "The University of Pittsburgh", 
@@ -37,7 +36,7 @@ struct Menu
 
   void printStartup();
 
-  void 
+  void modifyLab(int selection, Lab labArray[]);
 
   bool quitLabTrac();
 
@@ -64,23 +63,26 @@ int main()
 
   while(active)
   {
-    selection = ioHandiling::promptInt("Please select a menu item. ", 1, 4);
+    selection = ioHandiling::promptInt("Please select a menu item. ", 1, 5);
     switch(selection)
     {
-      //Option 1:
-      case 1: 
+      //Option 1: Login
+      case 1: instance.modifyLab(1, availableLabs);
         break;
 
-      //Option 2:
-      case 2:
+      //Option 2: Logout
+      case 2: instance.modifyLab(2, availableLabs);
         break;
 
-      //Option 3: 
-      case 3:
+      //Option 3: Search
+      case 3: instance.modifyLab(3, availableLabs);
         break;
       
-      //Option 4: logout
-      case 4: active = instance.quitLabTrac();
+      //Option 4: Display Lab
+      case 4: instance.modifyLab(4, availableLabs);
+        break;
+      //Option 5: logout
+      case 5: active = instance.quitLabTrac();
         break;
 
     }
@@ -90,8 +92,8 @@ int main()
 
 void Menu::printHeader()
 {
-  std::cout << "|-- LabTrac 2 - Student Computer Lab Tracking System --|\n"
-       << "|-- Created by Patrick M. Howard - For education use --|\n";
+  std::cout << "\n\n|-- LabTrac 2 - Student Computer Lab Tracking System --|\n"
+       << "|-- Created by Patrick M. Howard - For education use --|\n|\n";
 
 }
 
@@ -107,10 +109,10 @@ void Menu::printMenu()
 {
   std::string menuOptions[5] = {"Simulate Login", "Simulate Logoff", "Search", "Display Lab", "Quit"};
   
-  std::cout << "| MAIN MENU\n";
+  std::cout << "|\n| MAIN MENU\n";
   for(int i = 0; i < 5; ++i)
   {
-    std::cout << "| " << i+1 << ") " << menuOptions[i] << "\n";
+    std::cout << "| " << i+1 << ")1 " << menuOptions[i] << "\n";
   } 
 }
 
@@ -127,4 +129,30 @@ bool Menu::quitLabTrac()
   return false;
 }
 
+void Menu::modifyLab(int selection, Lab labArray[])
+{
+  int uniSelection;
 
+  if(selection != 2 || selection != 3)
+  { 
+    uniSelection = ioHandiling::promptInt("Please select a lab.", 1, NUMLABS);
+  }
+
+  if(selection == 1)
+  {
+    std::cout << "| Selected " << UNIVERSITYNAMES[uniSelection] << "\n";
+    labArray[uniSelection].simulateLogin();
+  }
+  else if(selection == 2)
+  {
+    
+  }
+  else if(selection == 3)
+  {
+    
+  }
+  else if(selection == 4)
+  {
+
+  }
+}

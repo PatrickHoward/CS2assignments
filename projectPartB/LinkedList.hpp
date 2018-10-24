@@ -2,9 +2,8 @@
 
 #include "Computer.hpp"
 
-class CompuNode
+struct CompuNode
 {
-public:
     CompuNode* next;
     CompuNode* prev;
 

@@ -25,7 +25,12 @@ public:
  
     void simulateLogin()
     {
+        if (labOccupancy >= labSize)
+        {
+            std::cout << "| Lab occupancy is full at this time, please try again later.\n";
+        }
         int seatSelection = ioHandiling::promptInt("Please select a seat assignment.", 1, labSize);
+        //TODO: Use the search method and check to see if the desired lab is occupied.
         //Find the appropriate spot in a linked list and call that computer object's login method.
     }
  
@@ -41,7 +46,7 @@ public:
 
     void displayLab()
     {
-
+        //Loop through every node in the LinkedList
     }
 
     void assignLabSize(int labSize_)

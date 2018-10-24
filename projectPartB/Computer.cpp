@@ -18,28 +18,7 @@ void Computer::login()
   //Call mkID and assign userID.
   userID = makeID();
   std::cout << "| Assigned user to: " << std::setfill('0') << std::setw(5) << userID << "\n" << std::setfill(' ');
-
-
-  //Now to assign the name...  
-  bool invalidInput = true; //Unlike the American judicial system, invalid until proven valid.
-  while(invalidInput)//Check to make sure the name is less than 35 characters 
-  {
-
-    std::cout << "| Please input a name (max 35 chars) > ";
-    std::getline(std::cin, studentName);
-
-    if(studentName.length() > 35 || studentName.length() == 0)
-    { 
-      //Input is deemed invalid, clean the buffer and try again.
-      std::cout << "| Invalid input! Please try again!\n";
-      
-    }
-    else
-    {
-      //Valid input, set invalidInput to true and move on.
-      invalidInput = false;
-    }  
-  }
+  
   
   //And time... Now this can only be set in 15 minute increments...
   do
