@@ -1,14 +1,13 @@
 #include<iostream>
-#include<ctime>
 #include<cstdlib>
 #include<string>
 #include<iomanip>
 
 #include "Computer.hpp"
+#include "ioHandiling.hpp"
 
 Computer::Computer()
 {
-  
   userID = -1;
   studentName = "empty";
   timeUsed = 0;
@@ -32,8 +31,8 @@ void Computer::login()
     if(studentName.length() > 35 || studentName.length() == 0)
     { 
       //Input is deemed invalid, clean the buffer and try again.
-      std::cout << "| Invalid input, please try again.\n";
-      scrub(std::cin);
+      std::cout << "| Invalid input! Please try again!\n";
+      
     }
     else
     {
@@ -43,26 +42,12 @@ void Computer::login()
   }
   
   //And time... Now this can only be set in 15 minute increments...
-  invalidInput = true; //I'm recycling this...
-  while(invalidInput)
-  { 
-    std::cout << "| Please input time used (15/30/45/60) > ";
-    std::cin >> timeUsed;
-    
-    if(std::cin.fail() || timeUsed > 60 || timeUsed % 15 != 0)
-    {
-      //Invalid is deemed invalid, clean the buffer and try agian. 
-      std::cout << "| Invalid input, please try again.\n";
-     
-      scrub(std::cin);
-    }
-    else
-    {
-      //Valid input, set invalidInput to false and move on.
-      invalidInput = false;
-    } 
-    std::cout << "| Assigned " << studentName << " to user# " << userID << ".\n";
-  } 
+  do
+  {
+    timeUsed = ioHandiling::promptInt("Please input time used in 15 minute increments.", 15, 60);
+  } while(timeUsed % 15 != 0);
+
+  std::cout << "| Assigned " << studentName << " to user# " << userID << ".\n"; 
 }
 
 void Computer::logout()

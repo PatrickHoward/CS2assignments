@@ -1,35 +1,49 @@
 #pragma once
 
-template<class T> class LinkedList
+#include "Computer.hpp"
+
+class CompuNode
+{
+public:
+    CompuNode* next;
+    CompuNode* prev;
+
+    Computer node;
+};
+
+class LinkedList
 {
 public:
     LinkedList()
     {
+        size = 0;
 
+        head->next = nullptr;
+        head->prev = nullptr;
     }
 
-    LinkedList(int size_)
+    void appendNode(const Computer& addThis)
     {
-         
+        CompuNode* newNode = new CompuNode;
+        newNode->node = addThis;
+        head->next;
+        
     }
 
-    void appendNode(const T& addThis);
+    void insertNode(const Computer& addThis, int pos)
+    {
 
-    void insertNode(const T& addThis, int pos);
+    }
 
     void deleteNode(int pos);
 
-    T* getNode(int pos) const;
+    Computer* getNode(int pos) const;
 
-    T* findNode(T findThis) const;
+    Computer* findNode(Computer findThis) const;
 
     ~LinkedList();
 
-private:
-    T node;
-    T* next;
-    T* prev;
-
     int size;
+    CompuNode* head;
 
 };
