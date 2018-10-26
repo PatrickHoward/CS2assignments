@@ -1,4 +1,4 @@
-#ifndef 
+#ifndef IOHANDILING
 #define IOHANDILING
 
 #include <string>

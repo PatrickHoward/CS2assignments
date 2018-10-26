@@ -1,4 +1,4 @@
-#ifndef
+#ifndef COMPUTER
 #define COMPUTER
 
 #include <string>

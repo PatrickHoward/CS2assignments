@@ -1,4 +1,5 @@
-#pragma once
+#ifndef LAB
+#define LAB
 
 #include <iostream>
 #include <string>
@@ -43,3 +44,5 @@ private:
     std::string labName;
     //LinkedList compuLab
 };
+
+#endif
