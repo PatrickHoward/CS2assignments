@@ -28,131 +28,129 @@ const std::string UNIVERSITYNAMES[NUMLABS] = {"The University of Michigan", "The
 
 struct Menu
 {
-  void printHeader();
+    void printHeader();
 
-  void printLabs();
+    void printLabs();
 
-  void printMenu();
+    void printMenu();
 
-  void printStartup();
+    void printStartup();
 
-  void modifyLab(int selection, Lab labArray[]);
+    void modifyLab(int selection, Lab labArray[]);
 
-  bool quitLabTrac();
-
+    bool quitLabTrac();
 };
-
-
 
 int main()
 {
-  srand(time(0)); //Setting the seed for rand
+    srand(time(0)); //Setting the seed for rand
 
-  Menu instance; 
-  instance.printStartup();  
+    Menu instance; 
+    instance.printStartup();  
 
-  bool active = true;
-  int selection = 0;
+    bool active = true;
+    int selection = 0;
 
-  Lab availableLabs[NUMLABS];
-  for(int i = 0; i < NUMLABS; ++i)
-  {
-    availableLabs[i].assignLabName(UNIVERSITYNAMES[i]);
-    availableLabs[i].assignLabSize(LABSIZES[i]);
-  }
-
-  while(active)
-  {
-    selection = ioHandiling::promptInt("Please select a menu item. ", 1, 5);
-    switch(selection)
+    Lab availableLabs[NUMLABS];
+    for(int i = 0; i < NUMLABS; ++i)
     {
-      //Option 1: Login
-      case 1: instance.modifyLab(1, availableLabs);
-        break;
-
-      //Option 2: Logout
-      case 2: instance.modifyLab(2, availableLabs);
-        break;
-
-      //Option 3: Search
-      case 3: instance.modifyLab(3, availableLabs);
-        break;
-      
-      //Option 4: Display Lab
-      case 4: instance.modifyLab(4, availableLabs);
-        break;
-      //Option 5: logout
-      case 5: active = instance.quitLabTrac();
-        break;
-
+        availableLabs[i].assignLabName(UNIVERSITYNAMES[i]);
+        availableLabs[i].assignLabSize(LABSIZES[i]);
     }
 
-  }
+    while(active)
+    {
+        selection = ioHandiling::promptInt("Please select a menu item. ", 1, 5);
+        switch(selection)
+        {
+        //Option 1: Login
+        case 1: instance.modifyLab(1, availableLabs);
+        break;
+
+        //Option 2: Logout
+        case 2: instance.modifyLab(2, availableLabs);
+        break;
+
+        //Option 3: Search
+        case 3: instance.modifyLab(3, availableLabs);
+        break;
+
+        //Option 4: Display Lab
+        case 4: instance.modifyLab(4, availableLabs);
+        break;
+        //Option 5: logout
+        case 5: active = instance.quitLabTrac();
+        break;
+        }
+
+    }
 } 
 
 void Menu::printHeader()
 {
-  std::cout << "\n\n|-- LabTrac 2 - Student Computer Lab Tracking System --|\n"
-       << "|-- Created by Patrick M. Howard - For education use --|\n|\n";
+std::cout << "\n\n|-- LabTrac 2 - Student Computer Lab Tracking System --|\n"
+          << "|-- Created by Patrick M. Howard - For education use --|\n|\n";
 
 }
 
 void Menu::printLabs()
 {
-  for(int i = 0; i < NUMLABS; ++i)
-  {
-    std::cout << "| Lab #" << i+1 << " for " << UNIVERSITYNAMES[i] << "\n";
-  }
+    for(int i = 0; i < NUMLABS; ++i)
+    {
+        std::cout << "| Lab #" << i+1 << " for " << UNIVERSITYNAMES[i] << "\n";
+    }
 }
 
 void Menu::printMenu()
 {
-  std::string menuOptions[5] = {"Simulate Login", "Simulate Logoff", "Search", "Display Lab", "Quit"};
-  
-  std::cout << "|\n| MAIN MENU\n";
-  for(int i = 0; i < 5; ++i)
-  {
-    std::cout << "| " << i+1 << ")1 " << menuOptions[i] << "\n";
-  } 
+    std::string menuOptions[5] = {"Simulate Login", "Simulate Logoff", "Search", "Display Lab", "Quit"};
+
+    std::cout << "|\n| MAIN MENU\n";
+    for(int i = 0; i < 5; ++i)
+    {
+        std::cout << "| " << i+1 << ") " << menuOptions[i] << "\n";
+    } 
 }
 
 void Menu::printStartup()
 {
-  printHeader();
-  printLabs();
-  printMenu();
+    printHeader();
+    printLabs();
+    printMenu();
 }
 
 bool Menu::quitLabTrac()
 {
-  std::cout << "|-- Now exiting, goodbye!\n" << "|-- LabTrac 2 - By Patrick M. Howard\n";
-  return false;
+    std::cout << "|-- Now exiting, goodbye!\n" << "|-- LabTrac 2 - By Patrick M. Howard\n";
+    return false;
 }
 
 void Menu::modifyLab(int selection, Lab labArray[])
 {
-  int uniSelection;
+    int uniSelection;
 
-  if(selection != 2 || selection != 3)
-  { 
-    uniSelection = ioHandiling::promptInt("Please select a lab.", 1, NUMLABS);
-  }
+    if(selection != 2 || selection != 3)
+    { 
+        uniSelection = ioHandiling::promptInt("Please select a lab.", 1, NUMLABS);
+    }
 
-  if(selection == 1)
-  {
-    std::cout << "| Selected " << UNIVERSITYNAMES[uniSelection] << "\n";
-    labArray[uniSelection].simulateLogin();
-  }
-  else if(selection == 2)
-  {
-    
-  }
-  else if(selection == 3)
-  {
-    
-  }
-  else if(selection == 4)
-  {
+    if(selection == 1)
+    {
+        std::cout << "| Selected " << UNIVERSITYNAMES[uniSelection] << "\n";
+        labArray[uniSelection].simulateLogin();
+    }
+    else if(selection == 2)
+    {
+        int userID = ioHandiling::promptInt("Please input a user ID.", 1, 99999);
+         
+    }
+    else if(selection == 3)
+    {
 
-  }
+
+    }
+    else if(selection == 4)
+    {
+
+    }
 }

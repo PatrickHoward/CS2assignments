@@ -5,5 +5,6 @@ add_executable(labTrac
                 projectPartB.cpp
                 ioHandiling.cpp
                 Computer.cpp
+                Lab.cpp
                 )
 

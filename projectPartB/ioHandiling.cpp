@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <fstream>
 
 #include "ioHandiling.hpp"
 
@@ -46,5 +47,21 @@ string ioHandiling::promptString(std::string question, int minLen, int maxLen)
             return inputVal;
         }
     } while(true);
+}
+
+
+//Start of logFile class methods
+ioHandiling::logFile::logFile(std::string fileName_)
+    : fileName(fileName_)
+{
+
+}
+
+void ioHandiling::logFile::writeLine(std::string& line)
+{
+    file.open(fileName, ios::app);
+    
+    file << line;
+    file.close();
 }
 

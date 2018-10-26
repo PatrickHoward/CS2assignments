@@ -8,56 +8,34 @@
 class Lab
 {
 public:
-    Lab()
-    {
-        labSize = 0;
-        labName = "uni name";
-    }
+    Lab();
 
-    Lab(int labSize_, std::string labName_)
-        : labSize(labSize_),
-        labName(labName_)
-    {
-        labOccupancy = 0;
-    }
+    //Pr - Takes in an int labSize_ and a string labName_
+    //Po - Void function, creates a new Lab object with labSize,
+    //     labName, and a Linked List of computer objects
+    Lab(int labSize_, std::string labName_);
 
     // Computer search (int userID);
  
-    void simulateLogin()
-    {
-        if (labOccupancy >= labSize)
-        {
-            std::cout << "| Lab occupancy is full at this time, please try again later.\n";
-        }
-        int seatSelection = ioHandiling::promptInt("Please select a seat assignment.", 1, labSize);
-        //TODO: Use the search method and check to see if the desired lab is occupied.
-        //Find the appropriate spot in a linked list and call that computer object's login method.
-    }
- 
-    void simulateLogoff(int userID)
-    {
-        do
-        {
-            //Iterate through the linked list        
+    //Pr - Nothing
+    //Po - Void funciton, assigns values to a computer object within the linked list.
+    void simulateLogin();
 
-        }while(1);
+    //Pr - Asks for the userID
+    //Po - Void function, resets computer object within the linked list.
+    void simulateLogoff(int userID);
 
-    }
+    //Pr - Nothing
+    //Po - Void function, accesses and loops through the linked list.
+    void displayLab();
 
-    void displayLab()
-    {
-        //Loop through every node in the LinkedList
-    }
+    //Pr - A integer labSize_
+    //Po - Void function, modifier for the labSize attribute.
+    void assignLabSize(int labSize_);
 
-    void assignLabSize(int labSize_)
-    {
-        labSize = labSize_;
-    }
-
-    void assignLabName(std::string labName_)
-    {
-        labName = labName_;
-    }
+    //Pr - A string labName_
+    //Po - Void fuction, modifier for the labName attribute.
+    void assignLabName(std::string labName_);
 
 private:
     int labOccupancy;
