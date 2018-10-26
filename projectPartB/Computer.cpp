@@ -1,8 +1,8 @@
-#include<iostream>
-#include<cstdlib>
-#include<ctime>
-#include<string>
-#include<iomanip>
+#include <iostream>
+#include <cstdlib>
+#include <string>
+#include <iomanip>
+#include <sstream>
 
 #include "Computer.hpp"
 #include "ioHandiling.hpp"
@@ -14,7 +14,7 @@ Computer::Computer()
   timeUsed = 0;
 }
 
-void Computer::login()
+void Computer::login(ioHandiling::logFile file)
 {
     //Call mkID and assign userID.
     userID = makeID();
@@ -30,13 +30,12 @@ void Computer::login()
 
     std::cout << "| Assigned " << studentName << " to user# " << userID << ".\n"; 
 
+    std::ostringstream logLine;
+    logLine << ioHandiling::getTime() << " - I - " << userID << " - " <<  timeUsed << " - " << studentName;
 
-    time_t currentTime = time(0);
-    char* timeIn = ctime(&currentTime);
-    timeIn[20] = '\0';
+    std::string output = logLine.str();
 
-    
-
+    file.writeLine(output);
 }
 
 void Computer::logout()
@@ -53,26 +52,26 @@ int Computer::makeID()
     return rand()%99999;
 }
 
-int Computer::getID()
+int Computer::getID() const
 {
     return userID;
 }
 
-std::string Computer::getStudentName()
+std::string Computer::getStudentName() const
 {
     return studentName;
 }
 
-void Computer::assignID(int userID_)
+void Computer::assignID(const int userID_)
 {
     userID = userID_;
 }
-void Computer::assignStudentName(std::string studentName_)
+void Computer::assignStudentName(std::string& studentName_)
 {
     studentName = studentName_;
 }
 
-void Computer::assignTime(int timeUsed_)
+void Computer::assignTime(const int timeUsed_)
 {
     timeUsed = timeUsed_;
 }

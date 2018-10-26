@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <ctime>
 #include <fstream>
 
 #include "ioHandiling.hpp"
@@ -49,6 +50,13 @@ string ioHandiling::promptString(std::string question, int minLen, int maxLen)
     } while(true);
 }
 
+string ioHandiling::getTime()
+{
+    time_t now = time(0);
+    char* timeIn = ctime(&now);
+    timeIn[0] = '\0';
+    return (string)timeIn;
+}
 
 //Start of logFile class methods
 ioHandiling::logFile::logFile(std::string fileName_)

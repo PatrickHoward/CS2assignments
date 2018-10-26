@@ -1,2 +1,8 @@
 #Compiled files...
 *.out
+
+#Build directories in project folders
+/projectPartB/build/
+
+#Fuck these json files that vscode keeps spluttering all over the place.
+*.json

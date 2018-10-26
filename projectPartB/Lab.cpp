@@ -26,6 +26,7 @@ void Lab::simulateLogin()
     int seatSelection = ioHandiling::promptInt("Please select a seat assignment.", 1, labSize);
     //TODO: Use the search method and check to see if the desired lab is occupied.
     //Find the appropriate spot in a linked list and call that computer object's login method.
+    
 }
 
 void Lab::simulateLogoff(int userID)

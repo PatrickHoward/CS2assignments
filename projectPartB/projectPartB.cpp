@@ -26,15 +26,17 @@ const std::string UNIVERSITYNAMES[NUMLABS] = {"The University of Michigan", "The
                                               "Stanford University", "Arizona State University", "North Texas State University", 
                                               "The University of Alabama, Huntsville", "Princeton University", "Duquesne University"};
 
+const std::string LOGFILE = "labTrac_log.txt";
+
 struct Menu
 {
-    void printHeader();
+    void printHeader(); //Prints the header
 
-    void printLabs();
+    void printLabs(); //Prints the available labs to select from.
 
-    void printMenu();
+    void printMenu(); //Prints the menu to select from.
 
-    void printStartup();
+    void printStartup(); //Prints the top three functions, respectively.
 
     void modifyLab(int selection, Lab labArray[]);
 
@@ -83,6 +85,7 @@ int main()
         break;
         }
 
+        instance.printMenu();
     }
 } 
 
@@ -153,4 +156,6 @@ void Menu::modifyLab(int selection, Lab labArray[])
     {
 
     }
+
+    std::cout << "| \n";
 }

@@ -2,6 +2,7 @@
 #define COMPUTER
 
 #include <string>
+#include "ioHandiling.hpp"
 
 class Computer
 {
@@ -10,7 +11,7 @@ class Computer
     
     //Pr - Nothing
     //Po - Void function, Performs the login logic
-    void login();
+    void login(ioHandiling::logFile file);
 
     //Pr - Nothing
     //Po - Void function, performs the logout logic
@@ -22,15 +23,16 @@ class Computer
 
     //Pr - Nothing
     //Po - Returns the assigned ID to that respective computer object
-    int getID();
+    int getID() const;
 
     //Pr - Nothing
     //Po - Returns a string with the assigned studetn name for the respective computer object
-    std::string getStudentName();
+    std::string getStudentName() const;
 
-    void assignID(int userID_);
-    void assignStudentName(std::string studentName_);
-    void assignTime(int timeUsed_);
+    //The following three take in their respective objects that they modify within the computer object.
+    void assignID(const int userID_);
+    void assignStudentName(std::string& studentName_);
+    void assignTime(const int timeUsed_);
 
   private:
     int userID;
