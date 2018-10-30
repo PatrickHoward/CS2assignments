@@ -14,7 +14,7 @@ Computer::Computer()
   timeUsed = 0;
 }
 
-void Computer::login(ioHandiling::logFile file)
+void Computer::login(ioHandiling::LogFile file)
 {
     //Call mkID and assign userID.
     userID = makeID();

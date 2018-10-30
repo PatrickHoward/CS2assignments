@@ -19,18 +19,22 @@ namespace ioHandiling
     //Po - Returns a string of the time, like the prototype says.
     std::string getTime();
 
-    class logFile
+    class LogFile
     {
     public:
-        logFile(std::string fileName_);
+        LogFile(std::string& fileName_);
 
         //Pr - Takes a string in
         //Po - Void function, puts it into a file specified at the beginning.
-        void writeLine(std::string& line);
+        void writeLine(const std::string& line);
+
+        //Pr - Takes in nothing.
+        //Po - Returns a string of the last line in a file.
+        std::string pullLine();
         
     private:
         std::string fileName;
-        std::fstream file;
+        std::fstream outputFile;
     };
 }
 

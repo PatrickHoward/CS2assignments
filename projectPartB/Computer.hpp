@@ -11,7 +11,7 @@ class Computer
     
     //Pr - Nothing
     //Po - Void function, Performs the login logic
-    void login(ioHandiling::logFile file);
+    void login(ioHandiling::LogFile file);
 
     //Pr - Nothing
     //Po - Void function, performs the logout logic

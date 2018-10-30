@@ -26,7 +26,7 @@ const std::string UNIVERSITYNAMES[NUMLABS] = {"The University of Michigan", "The
                                               "Stanford University", "Arizona State University", "North Texas State University", 
                                               "The University of Alabama, Huntsville", "Princeton University", "Duquesne University"};
 
-const std::string LOGFILE = "labTrac_log.txt";
+std::string logfile = "labTrac_log.txt";
 
 struct Menu
 {
@@ -36,11 +36,13 @@ struct Menu
 
     void printMenu(); //Prints the menu to select from.
 
+    void startupTimestamp(ioHandiling::LogFile& file); 
+
     void printStartup(); //Prints the top three functions, respectively.
 
-    void modifyLab(int selection, Lab labArray[]);
+    void modifyLab(int selection, Lab labArray[]); //Performs the logic of each menu selection.
 
-    bool quitLabTrac();
+    bool quitLabTrac(ioHandiling::LogFile& file); //Exits the program.
 };
 
 int main()
@@ -48,7 +50,10 @@ int main()
     srand(time(0)); //Setting the seed for rand
 
     Menu instance; 
-    instance.printStartup();  
+    instance.printStartup();
+
+    ioHandiling::LogFile activityTracker(logfile);
+    instance.startupTimestamp(activityTracker);
 
     bool active = true;
     int selection = 0;
@@ -62,7 +67,7 @@ int main()
 
     while(active)
     {
-        selection = ioHandiling::promptInt("Please select a menu item. ", 1, 5);
+        selection = ioHandiling::promptInt("Please select a menu item. ", 1, 6);
         switch(selection)
         {
         //Option 1: Login
@@ -80,12 +85,14 @@ int main()
         //Option 4: Display Lab
         case 4: instance.modifyLab(4, availableLabs);
         break;
-        //Option 5: logout
-        case 5: active = instance.quitLabTrac();
+
+        //Option 5: Recover User
+        case 5: instance.modifyLab(5, availableLabs);
+        break;
+        //Option 6: Quit program
+        case 6: active = instance.quitLabTrac(activityTracker);
         break;
         }
-
-        instance.printMenu();
     }
 } 
 
@@ -106,13 +113,23 @@ void Menu::printLabs()
 
 void Menu::printMenu()
 {
-    std::string menuOptions[5] = {"Simulate Login", "Simulate Logoff", "Search", "Display Lab", "Quit"};
+    std::string menuOptions[6] = {"Simulate Login", "Simulate Logoff", 
+                                  "Search", "Display Lab", "Recover User",
+                                  "Quit"};
 
     std::cout << "|\n| MAIN MENU\n";
-    for(int i = 0; i < 5; ++i)
+    for(int i = 0; i < 6; ++i)
     {
         std::cout << "| " << i+1 << ") " << menuOptions[i] << "\n";
-    } 
+
+    }
+
+    std::cout << "|\n"; 
+}
+
+void Menu::startupTimestamp(ioHandiling::LogFile& file)
+{
+    file.writeLine("LabTrac2 Started on " + ioHandiling::getTime());
 }
 
 void Menu::printStartup()
@@ -122,19 +139,26 @@ void Menu::printStartup()
     printMenu();
 }
 
-bool Menu::quitLabTrac()
+bool Menu::quitLabTrac(ioHandiling::LogFile& file)
 {
     std::cout << "|-- Now exiting, goodbye!\n" << "|-- LabTrac 2 - By Patrick M. Howard\n";
+    file.writeLine("Exited LabTrac2 on " + ioHandiling::getTime());
     return false;
 }
 
 void Menu::modifyLab(int selection, Lab labArray[])
 {
     int uniSelection;
+    int userID;
 
-    if(selection != 2 || selection != 3)
+    //Options 1 (Login) and 4 (display lab) ask for
+    if(selection == 1 || selection == 4)
     { 
         uniSelection = ioHandiling::promptInt("Please select a lab.", 1, NUMLABS);
+    }
+    else if (selection == 2 || selection == 3 || selection == 5)
+    {
+        userID = ioHandiling::promptInt("Please input a user ID.", 1, 99999);   
     }
 
     if(selection == 1)
@@ -144,8 +168,10 @@ void Menu::modifyLab(int selection, Lab labArray[])
     }
     else if(selection == 2)
     {
-        int userID = ioHandiling::promptInt("Please input a user ID.", 1, 99999);
-         
+        for(int i = 0; i < NUMLABS; i++)
+        {
+            //labArray[i].simulateLogout(userID);
+        }
     }
     else if(selection == 3)
     {

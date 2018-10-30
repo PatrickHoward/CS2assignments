@@ -4,10 +4,15 @@
 
 struct CompuNode
 {
-    CompuNode* next;
-    CompuNode* prev;
+    CompuNode(CompuNode* next_, Computer data_)
+        : next(next_),
+        data(data_)
+    {
+    
+    }
 
-    Computer node;
+    CompuNode* next;
+    Computer data;
 };
 
 class LinkedList
@@ -17,32 +22,35 @@ public:
     {
         size = 0;
 
-        head->next = nullptr;
-        head->prev = nullptr;
+        head = nullptr;
+        tail = nullptr;
     }
 
-    void appendNode(const Computer& addThis)
+    void appendNode(Computer addThis)
     {
-        CompuNode* newNode = new CompuNode;
-        newNode->node = addThis;
-        head->next;
+        size++;
+
+        CompuNode newNode(nullptr, addThis);
+
+        if(!head)
+        {
+            head = &newNode;
+        }
         
+        
+        
+
+
     }
-
-    void insertNode(const Computer& addThis, int pos)
-    {
-
-    }
-
-    void deleteNode(int pos);
 
     Computer* getNode(int pos) const;
-
+        
     Computer* findNode(Computer findThis) const;
 
     ~LinkedList();
 
     int size;
     CompuNode* head;
+    CompuNode* tail;
 
 };

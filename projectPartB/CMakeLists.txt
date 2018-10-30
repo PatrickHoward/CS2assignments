@@ -6,5 +6,6 @@ add_executable(labTrac
                 ioHandiling.cpp
                 Computer.cpp
                 Lab.cpp
+                LinkedList.cpp
                 )
 

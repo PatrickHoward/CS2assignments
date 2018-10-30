@@ -54,22 +54,27 @@ string ioHandiling::getTime()
 {
     time_t now = time(0);
     char* timeIn = ctime(&now);
-    timeIn[0] = '\0';
+    timeIn[20] = '\0';
     return (string)timeIn;
 }
 
 //Start of logFile class methods
-ioHandiling::logFile::logFile(std::string fileName_)
+ioHandiling::LogFile::LogFile(std::string& fileName_)
     : fileName(fileName_)
 {
 
 }
 
-void ioHandiling::logFile::writeLine(std::string& line)
+void ioHandiling::LogFile::writeLine(const std::string& line)
 {
-    file.open(fileName, ios::app);
+    outputFile.open(fileName, ios::app);
     
-    file << line;
-    file.close();
+    outputFile << line << endl;
+    outputFile.close();
+}
+
+string ioHandiling::LogFile::pullLine()
+{
+    
 }
 
