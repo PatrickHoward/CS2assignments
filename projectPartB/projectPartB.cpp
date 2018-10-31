@@ -14,6 +14,8 @@
 
 #include "ioHandiling.hpp"
 #include "Lab.hpp"
+#include "ioHandiling.hpp"
+
 
 //Global Constants
 //Number of computer Labs
@@ -36,11 +38,11 @@ struct Menu
 
     void printMenu(); //Prints the menu to select from.
 
-    void startupTimestamp(ioHandiling::LogFile& file); 
+    void startupTimestamp(ioHandiling::LogFile& log); 
 
     void printStartup(); //Prints the top three functions, respectively.
 
-    void modifyLab(int selection, Lab labArray[]); //Performs the logic of each menu selection.
+    void modifyLab(int selection, Lab labArray[], ioHandiling::LogFile& file); //Performs the logic of each menu selection.
 
     bool quitLabTrac(ioHandiling::LogFile& file); //Exits the program.
 };
@@ -71,23 +73,23 @@ int main()
         switch(selection)
         {
         //Option 1: Login
-        case 1: instance.modifyLab(1, availableLabs);
+        case 1: instance.modifyLab(1, availableLabs, activityTracker);
         break;
 
         //Option 2: Logout
-        case 2: instance.modifyLab(2, availableLabs);
+        case 2: instance.modifyLab(2, availableLabs, activityTracker);
         break;
 
         //Option 3: Search
-        case 3: instance.modifyLab(3, availableLabs);
+        case 3: instance.modifyLab(3, availableLabs, activityTracker);
         break;
 
         //Option 4: Display Lab
-        case 4: instance.modifyLab(4, availableLabs);
+        case 4: instance.modifyLab(4, availableLabs, activityTracker);
         break;
 
         //Option 5: Recover User
-        case 5: instance.modifyLab(5, availableLabs);
+        case 5: instance.modifyLab(5, availableLabs, activityTracker);
         break;
         //Option 6: Quit program
         case 6: active = instance.quitLabTrac(activityTracker);
@@ -146,7 +148,7 @@ bool Menu::quitLabTrac(ioHandiling::LogFile& file)
     return false;
 }
 
-void Menu::modifyLab(int selection, Lab labArray[])
+void Menu::modifyLab(int selection, Lab labArray[], ioHandiling::LogFile& log)
 {
     int uniSelection;
     int userID;
@@ -164,7 +166,7 @@ void Menu::modifyLab(int selection, Lab labArray[])
     if(selection == 1)
     {
         std::cout << "| Selected " << UNIVERSITYNAMES[uniSelection] << "\n";
-        labArray[uniSelection].simulateLogin();
+        labArray[uniSelection].simulateLogin(log);
     }
     else if(selection == 2)
     {

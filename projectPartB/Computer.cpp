@@ -14,7 +14,8 @@ Computer::Computer()
   timeUsed = 0;
 }
 
-void Computer::login(ioHandiling::LogFile file)
+//TODO: Maybe refactor login() and logout() methods to a separate function that creates the logLine?
+void Computer::login(ioHandiling::LogFile& file)
 {
     //Call mkID and assign userID.
     userID = makeID();
@@ -38,9 +39,15 @@ void Computer::login(ioHandiling::LogFile file)
     file.writeLine(output);
 }
 
-void Computer::logout()
+void Computer::logout(ioHandiling::LogFile& file)
 {
     std::cout << "| " << studentName << " has been signed out. \n";
+
+    std::ostringstream logLine;
+    logLine << ioHandiling::getTime() << " - O - " << userID << " - " << timeUsed << " - " << studentName;
+
+    std::string output = logLine.str();
+    file.writeLine(output);
 
     userID = -1;
     studentName = "empty";

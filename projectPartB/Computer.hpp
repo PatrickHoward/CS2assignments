@@ -9,13 +9,13 @@ class Computer
   public:
     Computer();
     
-    //Pr - Nothing
+    //Pr - Takes in a LogFile object so a login can be written to labTrac_log.txt.
     //Po - Void function, Performs the login logic
-    void login(ioHandiling::LogFile file);
+    void login(ioHandiling::LogFile& file);
 
     //Pr - Nothing
     //Po - Void function, performs the logout logic
-    void logout();
+    void logout(ioHandiling::LogFile& file);
     
     //Pr - Nothing
     //Po - Returns a pseudorandomized integer from 1 to 99999 

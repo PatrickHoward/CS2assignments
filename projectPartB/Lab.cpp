@@ -1,4 +1,5 @@
 #include "Lab.hpp"
+#include "ioHandiling.hpp"
 
 Lab::Lab()
 {
@@ -16,7 +17,7 @@ Lab::Lab(int labSize_, std::string labName_)
 // Computer search (int userID)
 // {}
 
-void Lab::simulateLogin()
+void Lab::simulateLogin(ioHandiling::LogFile& log)
 {
     if (labOccupancy >= labSize)
     {
@@ -24,12 +25,14 @@ void Lab::simulateLogin()
         return;
     }
     int seatSelection = ioHandiling::promptInt("Please select a seat assignment.", 1, labSize);
+
+    
     //TODO: Use the search method and check to see if the desired lab is occupied.
     //Find the appropriate spot in a linked list and call that computer object's login method.
     
 }
 
-void Lab::simulateLogoff(int userID)
+void Lab::simulateLogoff(int userID, ioHandiling::LogFile& log)
 {
     do
     {

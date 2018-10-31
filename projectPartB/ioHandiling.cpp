@@ -33,6 +33,9 @@ string ioHandiling::promptString(std::string question, int minLen, int maxLen)
 {
     string inputVal;
 
+    //Performing the same functional use as scrub did in the last project.
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     do
     {
         std::cout << "| " << question << " ( max " << maxLen << " chars) > ";
@@ -62,19 +65,33 @@ string ioHandiling::getTime()
 ioHandiling::LogFile::LogFile(std::string& fileName_)
     : fileName(fileName_)
 {
-
+    outputFile.open(fileName_);
 }
 
 void ioHandiling::LogFile::writeLine(const std::string& line)
-{
-    outputFile.open(fileName, ios::app);
-    
+{   
     outputFile << line << endl;
-    outputFile.close();
 }
 
 string ioHandiling::LogFile::pullLine()
 {
+    string currentLine;
+    
+
+    if (!outputFile.eof())
+    {
+        getline(outputFile, currentLine);
+    }
+    else
+    {
+        currentLine = "eof";
+    }
+
+    return currentLine;
     
 }
 
+ioHandiling::LogFile::~LogFile()
+{
+    outputFile.close();
+}

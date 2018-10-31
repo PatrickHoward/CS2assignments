@@ -29,8 +29,10 @@ namespace ioHandiling
         void writeLine(const std::string& line);
 
         //Pr - Takes in nothing.
-        //Po - Returns a string of the last line in a file.
+        //Po - Returns a string of the last line in a file, returns an "eof" if the end of file is reached.
         std::string pullLine();
+
+        ~LogFile();
         
     private:
         std::string fileName;

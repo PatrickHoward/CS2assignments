@@ -5,6 +5,7 @@
 #include <string>
 
 #include "ioHandiling.hpp"
+#include "LinkedList.hpp"
 
 class Lab
 {
@@ -20,11 +21,11 @@ public:
  
     //Pr - Nothing
     //Po - Void funciton, assigns values to a computer object within the linked list.
-    void simulateLogin();
+    void simulateLogin(ioHandiling::LogFile& log);
 
     //Pr - Asks for the userID
     //Po - Void function, resets computer object within the linked list.
-    void simulateLogoff(int userID);
+    void simulateLogoff(int userID, ioHandiling::LogFile& log);
 
     //Pr - Nothing
     //Po - Void function, accesses and loops through the linked list.
@@ -42,7 +43,8 @@ private:
     int labOccupancy;
     int labSize;
     std::string labName;
-    //LinkedList compuLab
+
+    LinkedList compuLab;
 };
 
 #endif
