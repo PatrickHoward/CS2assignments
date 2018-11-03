@@ -9,6 +9,8 @@
 
 Computer::Computer()
 {
+  std::cout << "CompuConstructor called.\n";
+
   userID = -1;
   studentName = "empty";
   timeUsed = 0;

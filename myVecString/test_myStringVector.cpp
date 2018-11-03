@@ -8,6 +8,7 @@
 */
 
 #include "MyStringVector.hpp"
+
 #include <string>
 #include <algorithm>
 #include <iostream>

@@ -11,11 +11,19 @@ Lab::Lab(int labSize_, std::string labName_)
     : labSize(labSize_),
     labName(labName_)
 {
+    Computer newComputer;
+
     labOccupancy = 0;
+    for(int i = 0; i < labSize; i++)
+    {
+        compuLab.appendNode(newComputer);
+    }
 }
 
 // Computer search (int userID)
-// {}
+// {
+
+// }
 
 void Lab::simulateLogin(ioHandiling::LogFile& log)
 {
@@ -26,7 +34,7 @@ void Lab::simulateLogin(ioHandiling::LogFile& log)
     }
     int seatSelection = ioHandiling::promptInt("Please select a seat assignment.", 1, labSize);
 
-    
+    compuLab.goToNComp(seatSelection);
     //TODO: Use the search method and check to see if the desired lab is occupied.
     //Find the appropriate spot in a linked list and call that computer object's login method.
     

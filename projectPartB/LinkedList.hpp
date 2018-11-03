@@ -42,18 +42,17 @@ public:
 
     }
 
-    CompuNode* getNNode(int pos)
+    CompuNode* goToNComp(int n)
     {
-        CompuNode* tempNode = new CompuNode;
-        tempNode = head;
+        CompuNode* tmp = head;
 
-        for(int i = 0; i < pos || tempNode != NULL; ++i)
+        for (int i = 0; i < n-1; ++i)
         {
-            tempNode = tempNode->next;
+            tmp = tmp->next;
+            std::cout << this << '\n';
         }
 
-        return tempNode;
-
+        return tmp;
     }
 
     int size;

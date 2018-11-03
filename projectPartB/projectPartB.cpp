@@ -53,9 +53,9 @@ int main()
 
     Menu instance; 
     instance.printStartup();
-`
+
     ioHandiling::LogFile activityTracker(logfile);
-    instance.startupTimestamp(activityTrackerw);
+    instance.startupTimestamp(activityTracker);
 
     bool active = true;
     int selection = 0;
