@@ -65,6 +65,7 @@ int main()
     {
         availableLabs[i].assignLabName(UNIVERSITYNAMES[i]);
         availableLabs[i].assignLabSize(LABSIZES[i]);
+        availableLabs[i].fillWithCompuNodes();
     }
 
     while(active)
@@ -165,19 +166,22 @@ void Menu::modifyLab(int selection, Lab labArray[], ioHandiling::LogFile& log)
 
     if(selection == 1)
     {
-        std::cout << "| Selected " << UNIVERSITYNAMES[uniSelection] << "\n";
+        std::cout << "| Selected " << UNIVERSITYNAMES[uniSelection+1] << "\n";
         labArray[uniSelection].simulateLogin(log);
     }
     else if(selection == 2)
     {
         for(int i = 0; i < NUMLABS; i++)
         {
-            //labArray[i].simulateLogout(userID);
+            labArray[i].simulateLogoff(userID,log);
         }
     }
     else if(selection == 3)
     {
-
+        for(int i = 0; i < NUMLABS; i++)
+        {
+            labArray[i].searchLab(userID, i+1);
+        }
 
     }
     else if(selection == 4)

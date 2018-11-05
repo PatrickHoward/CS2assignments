@@ -9,16 +9,15 @@
 
 Computer::Computer()
 {
-  std::cout << "CompuConstructor called.\n";
-
   userID = -1;
   studentName = "empty";
   timeUsed = 0;
 }
 
 //TODO: Maybe refactor login() and logout() methods to a separate function that creates the logLine?
-void Computer::login(ioHandiling::LogFile& file)
+void Computer::login(int seatLoc_, ioHandiling::LogFile& file)
 {
+    seatLoc = seatLoc_;
     //Call mkID and assign userID.
     userID = makeID();
     std::cout << "| Assigned user to: " << std::setfill('0') << std::setw(5) << userID << "\n" << std::setfill(' ');
@@ -69,6 +68,11 @@ int Computer::getID() const
 std::string Computer::getStudentName() const
 {
     return studentName;
+}
+
+int Computer::getSeatLoc() const
+{
+    return seatLoc;
 }
 
 void Computer::assignID(const int userID_)

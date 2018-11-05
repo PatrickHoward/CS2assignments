@@ -49,7 +49,18 @@ public:
         for (int i = 0; i < n-1; ++i)
         {
             tmp = tmp->next;
-            std::cout << this << '\n';
+        }
+
+        return tmp;
+    }
+
+    CompuNode* findComputerByID(int userID)
+    {
+        CompuNode* tmp = head;
+        while(tmp->data.getID() != userID && tmp->next != NULL)
+        {
+            tmp = tmp->next;
+
         }
 
         return tmp;

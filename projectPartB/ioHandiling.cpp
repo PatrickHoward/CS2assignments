@@ -65,7 +65,7 @@ string ioHandiling::getTime()
 ioHandiling::LogFile::LogFile(std::string& fileName_)
     : fileName(fileName_)
 {
-    outputFile.open(fileName_);
+    outputFile.open(fileName_, ios::app);
 }
 
 void ioHandiling::LogFile::writeLine(const std::string& line)

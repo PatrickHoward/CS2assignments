@@ -11,7 +11,7 @@ class Computer
     
     //Pr - Takes in a LogFile object so a login can be written to labTrac_log.txt.
     //Po - Void function, Performs the login logic
-    void login(ioHandiling::LogFile& file);
+    void login(int seatLoc_, ioHandiling::LogFile& file);
 
     //Pr - Nothing
     //Po - Void function, performs the logout logic
@@ -21,13 +21,10 @@ class Computer
     //Po - Returns a pseudorandomized integer from 1 to 99999 
     int makeID();
 
-    //Pr - Nothing
-    //Po - Returns the assigned ID to that respective computer object
+    //The following three access thier appropriate attributes.
     int getID() const;
-
-    //Pr - Nothing
-    //Po - Returns a string with the assigned studetn name for the respective computer object
     std::string getStudentName() const;
+    int getSeatLoc() const;
 
     //The following three take in their respective objects that they modify within the computer object.
     void assignID(const int userID_);
@@ -39,6 +36,7 @@ class Computer
     std::string studentName; //Max 35 chars.
     int timeUsed;
 
+    int seatLoc;
 };
 
 #endif

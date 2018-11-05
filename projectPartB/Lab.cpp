@@ -1,9 +1,14 @@
+#include <sstream>
+
 #include "Lab.hpp"
 #include "ioHandiling.hpp"
+
+
 
 Lab::Lab()
 {
     labSize = 0;
+    labOccupancy = 0;
     labName = "uni name";
 }
 
@@ -11,19 +16,9 @@ Lab::Lab(int labSize_, std::string labName_)
     : labSize(labSize_),
     labName(labName_)
 {
-    Computer newComputer;
-
     labOccupancy = 0;
-    for(int i = 0; i < labSize; i++)
-    {
-        compuLab.appendNode(newComputer);
-    }
+    fillWithCompuNodes();
 }
-
-// Computer search (int userID)
-// {
-
-// }
 
 void Lab::simulateLogin(ioHandiling::LogFile& log)
 {
@@ -33,26 +28,39 @@ void Lab::simulateLogin(ioHandiling::LogFile& log)
         return;
     }
     int seatSelection = ioHandiling::promptInt("Please select a seat assignment.", 1, labSize);
+    CompuNode* selectedComp;
 
-    compuLab.goToNComp(seatSelection);
-    //TODO: Use the search method and check to see if the desired lab is occupied.
-    //Find the appropriate spot in a linked list and call that computer object's login method.
-    
+    selectedComp = compuLab.goToNComp(seatSelection);
+    selectedComp->data.login(seatSelection, log);
 }
 
 void Lab::simulateLogoff(int userID, ioHandiling::LogFile& log)
 {
-    do
+    CompuNode* selectedComp;
+    selectedComp = compuLab.findComputerByID(userID);
+    if(selectedComp->data.getID() != -1)
     {
-        //Iterate through the linked list        
+        selectedComp->data.logout(log);
+    }
+}
 
-    }while(1);
+void Lab::searchLab(int userID, int labLoc)
+{
+    CompuNode* selectedComp;
+    int seatLocation = 0;
 
+    selectedComp = compuLab.findComputerByID(userID);
+    if(selectedComp->data.getID() == userID)
+    {
+        std::cout << "| Found " << selectedComp->data.getStudentName() << " in Lab " << labLoc 
+                  << " at seat " << selectedComp->data.getSeatLoc() << "\n"; 
+        return;  
+    }
 }
 
 void Lab::displayLab()
 {
-    //Loop through every node in the LinkedList
+    //Loop through every node in the LinkedListß
 }
 
 void Lab::assignLabSize(int labSize_)
@@ -63,4 +71,15 @@ void Lab::assignLabSize(int labSize_)
 void Lab::assignLabName(std::string labName_)
 {
     labName = labName_;
+}
+
+void Lab::fillWithCompuNodes()
+{
+    Computer newComputer;
+
+    labOccupancy = 0;
+    for(int i = 0; i < labSize; i++)
+    {
+        compuLab.appendNode(newComputer);
+    }
 }

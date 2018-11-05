@@ -31,6 +31,8 @@ public:
     //Po - Void function, accesses and loops through the linked list.
     void displayLab();
 
+    void searchLab(int userID, int labLoc);
+
     //Pr - A integer labSize_
     //Po - Void function, modifier for the labSize attribute.
     void assignLabSize(int labSize_);
@@ -38,6 +40,10 @@ public:
     //Pr - A string labName_
     //Po - Void fuction, modifier for the labName attribute.
     void assignLabName(std::string labName_);
+
+    //Pr - Lab needs to have been constructued using the default constructor
+    //Po - Void function, adds labSize nodes to compuLab
+    void fillWithCompuNodes();
 
 private:
     int labOccupancy;
