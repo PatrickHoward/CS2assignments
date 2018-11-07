@@ -14,8 +14,6 @@
 
 #include "ioHandiling.hpp"
 #include "Lab.hpp"
-#include "ioHandiling.hpp"
-
 
 //Global Constants
 //Number of computer Labs
@@ -130,7 +128,7 @@ void Menu::printMenu()
     std::cout << "|\n"; 
 }
 
-void Menu::startupTimestamp(ioHandiling::LogFile& file)
+void Menu::startupTimestamp(ioHandiling::LogFile& file) 
 {
     file.writeLine("LabTrac2 Started on " + ioHandiling::getTime());
 }
@@ -155,13 +153,15 @@ void Menu::modifyLab(int selection, Lab labArray[], ioHandiling::LogFile& log)
     int userID;
 
     //Options 1 (Login) and 4 (display lab) ask for
-    if(selection == 1 || selection == 4)
-    { 
-        uniSelection = ioHandiling::promptInt("Please select a lab.", 1, NUMLABS);
-    }
-    else if (selection == 2 || selection == 3 || selection == 5)
+    
+    if (selection == 2 || selection == 3 || selection == 5)
     {
         userID = ioHandiling::promptInt("Please input a user ID.", 1, 99999);   
+    }
+    
+    if(selection == 1 || selection == 4 || selection == 5)
+    { 
+        uniSelection = ioHandiling::promptInt("Please select a lab.", 1, NUMLABS);
     }
 
     if(selection == 1)
@@ -182,12 +182,15 @@ void Menu::modifyLab(int selection, Lab labArray[], ioHandiling::LogFile& log)
         {
             labArray[i].searchLab(userID, i+1);
         }
-
     }
     else if(selection == 4)
     {
-
+    
     }
-
-    std::cout << "| \n";
+    else if(selection == 5)
+    {
+    	//Todo: create a recover logline in ioHandiling, (return a string and pass it to the 
+    	//		Lab class?)
+    }
 }
+    std::cout << "| \n";
