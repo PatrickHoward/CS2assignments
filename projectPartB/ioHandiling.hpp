@@ -18,7 +18,7 @@ namespace ioHandiling
     //Pr - Absolutely nothing, these pre and post conditions are getting old...
     //Po - Returns a string of the time, like the prototype says.
     std::string getTime();
-
+    
     class LogFile
     {
     public:
@@ -28,9 +28,9 @@ namespace ioHandiling
         //Po - Void function, puts it into a file specified at the beginning.
         void writeLine(const std::string& line);
 
-        //Pr - Takes in nothing.
+        //Pr - Takes a close flag in case the desired line is pulled.
         //Po - Returns a string of the last line in a file, returns an "eof" if the end of file is reached.
-        std::string pullLine();
+        std::string pullLine(bool close);
 
         ~LogFile();
         

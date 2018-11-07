@@ -189,8 +189,18 @@ void Menu::modifyLab(int selection, Lab labArray[], ioHandiling::LogFile& log)
     }
     else if(selection == 5)
     {
-    	//Todo: create a recover logline in ioHandiling, (return a string and pass it to the 
-    	//		Lab class?)
+        int recoveredID = -1;
+        std::string currentLine;
+
+
+        while (recoveredID != userID)
+        {
+            currentLine = log.pullLine(0);
+            recoveredID = stoi(currentLine.substr(27, 5));
+        }{}
+        
+        //return (recoveredID == userID) ? currentLine : "User ID not found.";
     }
-}
+
     std::cout << "| \n";
+}

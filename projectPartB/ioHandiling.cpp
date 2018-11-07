@@ -65,16 +65,28 @@ string ioHandiling::getTime()
 ioHandiling::LogFile::LogFile(std::string& fileName_)
     : fileName(fileName_)
 {
-    outputFile.open(fileName_, ios::app);
+
 }
 
 void ioHandiling::LogFile::writeLine(const std::string& line)
 {   
+    if(!outputFile.is_open())
+    {
+        outputFile.open(fileName, ios::app);
+    }
+
     outputFile << line << endl;
+    outputFile.close();
 }
 
-string ioHandiling::LogFile::pullLine()
+string ioHandiling::LogFile::pullLine(bool close)
 {
+    if(outputFile.is_open())
+    {
+        outputFile.close();
+        outputFile.open(fileName, ios::in);
+    }
+
     string currentLine;
     
 
@@ -85,6 +97,12 @@ string ioHandiling::LogFile::pullLine()
     else
     {
         currentLine = "eof";
+        outputFile.close();
+    }
+
+    if(close)
+    {
+        outputFile.close();
     }
 
     return currentLine;
@@ -93,5 +111,8 @@ string ioHandiling::LogFile::pullLine()
 
 ioHandiling::LogFile::~LogFile()
 {
-    outputFile.close();
+    if(outputFile.is_open())
+    {
+        outputFile.close();
+    }
 }
