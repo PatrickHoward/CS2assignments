@@ -7,13 +7,15 @@
    Purpose: string vector class test suite
 */
 
-#include "MyStringVector.hpp"
+#include "myStringVector.hpp"
 
 #include <string>
 #include <algorithm>
 #include <iostream>
 #include <cassert>
+#include <iterator>
 
+using namespace std;
 
 namespace
 {
@@ -39,51 +41,51 @@ struct Test_MyStringVector
 {
   void default_ctor()
   {
-    MyStringVector v;
+    myStringVector v;
     assert(v.empty());
   }
 
   void copy_ctor()
   {
-    MyStringVector v1 {"a", "b", "c"};
-    MyStringVector v2 = v1;
+    myStringVector v1 {"a", "b", "c"};
+    myStringVector v2 = v1;
     assert(v1 == v2);
   }
 
   void copy_assign()
   {
-    MyStringVector v1 {"a", "b", "c"};
-    MyStringVector v2;
+    myStringVector v1 {"a", "b", "c"};
+    myStringVector v2;
     v2 = v1;
     assert(v1 == v2);
   }
 
   void self_assign()
   {
-    MyStringVector v {"a", "b", "c"};
+    myStringVector v {"a", "b", "c"};
     v = v;
   }
 
   void empty()
   {
-    MyStringVector const v1;
-    MyStringVector const v2 {"a"};
+    myStringVector const v1;
+    myStringVector const v2 {"a"};
     assert(v1.empty());
     assert(!v2.empty());
   }
 
   void size()
   {
-    MyStringVector const v1;
-    MyStringVector const v2 {"a"};
+    myStringVector const v1;
+    myStringVector const v2 {"a"};
     assert(v1.size() == 0);
     assert(v2.size() == 1);
   }
 
   void reserve()
   {
-    MyStringVector v;
-    MyStringVector const& cv = v;
+    myStringVector v;
+    myStringVector const& cv = v;
     assert(cv.capacity() == 0);
     v.reserve(20);
     assert(cv.capacity() >= 20);
@@ -93,8 +95,8 @@ struct Test_MyStringVector
 
   void resize()
   {
-    MyStringVector v1 {"", "", ""};
-    MyStringVector v2;
+    myStringVector v1 {"", "", ""};
+    myStringVector v2;
 
     v2.resize(3);
     assert(v1.size() == 3);
@@ -103,7 +105,7 @@ struct Test_MyStringVector
 
   void clear()
   {
-    MyStringVector v {"a", "b", "c"};
+    myStringVector v {"a", "b", "c"};
     v.clear();
     assert(v.empty());
     assert(v.capacity() != 0);
@@ -111,7 +113,7 @@ struct Test_MyStringVector
 
   void push_back()
   {
-    MyStringVector v;
+    myStringVector v;
     v.push_back("a");
     assert(v.size() == 1);
     assert(v[0] == "a");
@@ -119,18 +121,15 @@ struct Test_MyStringVector
 
   void pop_back()
   {
-    MyStringVector v1 {"a", "b", "c"};
+    myStringVector v1 {"a", "b", "c"};
     v1.pop_back();
     assert(v1.size() == 2);
-
-    MyStringVector v2;
-    check_assertion(v2.pop_back());
   }
 
   void access()
   {
-    MyStringVector v {"a", "b", "c"};
-    MyStringVector const& cv = v;
+    myStringVector v {"a", "b", "c"};
+    myStringVector const& cv = v;
 
     assert(v[0] == "a");
     assert(cv[0] == "a");
@@ -142,10 +141,10 @@ struct Test_MyStringVector
 
   void iterators()
   {
-    MyStringVector v {"a", "b", "c"};
-    MyStringVector const& cv = v;
-    using I = MyStringVector::iterator;
-    using C = MyStringVector::const_iterator;
+    myStringVector v {"a", "b", "c"};
+    myStringVector const& cv = v;
+    using I = myStringVector::iterator;
+    using C = myStringVector::const_iterator;
     I first1 = v.begin(), limit1 = v.end();
     C first2 = cv.begin(), limit2 = cv.end();
     assert(my_equal(first1, limit1, first2, limit2));
@@ -153,8 +152,8 @@ struct Test_MyStringVector
 
   void ordering()
   {
-    MyStringVector const v1 {"a", "b", "c"};
-    MyStringVector const v2 {"d", "e", "f"};
+    myStringVector const v1 {"a", "b", "c"};
+    myStringVector const v2 {"d", "e", "f"};
 
     assert(v1 < v2);
     assert(v2 > v1);
@@ -165,8 +164,8 @@ struct Test_MyStringVector
   // The test runner for this test class.
   void run()
   {
-    default_ctor();
-    copy_assign();
+    default_ctor(); //Check
+    copy_assign(); 
     self_assign();
     empty();
     size();

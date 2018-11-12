@@ -14,11 +14,17 @@ class MyString
 public:
     static const std::size_t npos = INT32_MAX;
 
-    MyString();//Default constructor.
+    //Pr - 
+    //Po - Creates an empty string, what else are you expecting? Marry Poppins?
+    MyString();
 
-    MyString(const char* literal); //Constructor intiializing for a string literal.
+    //Pr - Takes in a string literal
+    //Po - Constructor intiializing for a string literal.
+    MyString(const char* literal);
 
-    MyString(const char* literal, int n); //Constructor initilaizing with a string literal of a specific size n.
+    //Pr - 
+    //Po - 
+    MyString(const char* literal, int n);
 
     MyString(const MyString& s); //Copy Constructor
 
