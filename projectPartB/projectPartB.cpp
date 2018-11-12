@@ -192,13 +192,20 @@ void Menu::modifyLab(int selection, Lab labArray[], ioHandiling::LogFile& log)
         int recoveredID = -1;
         std::string currentLine;
 
-
         while (recoveredID != userID)
         {
             currentLine = log.pullLine(0);
             recoveredID = stoi(currentLine.substr(27, 5));
-        }{}
+
+            if(currentLine == "eof")
+            {
+                break;
+            }
+
+        }
         
+        
+
         //return (recoveredID == userID) ? currentLine : "User ID not found.";
     }
 

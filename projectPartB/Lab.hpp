@@ -27,6 +27,10 @@ public:
     //Po - Void function, resets computer object within the linked list.
     void simulateLogoff(int userID, ioHandiling::LogFile& log);
 
+    //Pr - 
+    //Po - Void function, parses the linked list 
+    void assignToFirstAvailable(std::string line, ioHandiling::LogFile& log);
+
     //Pr - Nothing
     //Po - Void function, accesses and loops through the linked list.
     void displayLab();
