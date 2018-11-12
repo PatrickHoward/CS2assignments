@@ -99,6 +99,11 @@ myStringVector::iterator myStringVector::end() const
 
 void myStringVector::push_back(MyString element)
 {
+    if(isFull())
+    {
+        reserve(vecCapa);
+        ++vecCapa; 
+    }
 
     --vecSize;
     dynaArray[vecSize] = element;
