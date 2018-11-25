@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "myStringVector.hpp"
 #include "MyString.hpp"
 
@@ -17,27 +19,26 @@ myStringVector::myStringVector(std::initializer_list<MyString> list)
     : vecSize(list.size()),
     vecCapa(list.size()+1)
 {
-    for(MyString const& element:list)
+    for(const MyString& element : list)
     {
         push_back(element);
     }
-
-    beginning = &dynaArray[0];
-    ending = &dynaArray[vecSize];
-
 }
 
 myStringVector::myStringVector(const myStringVector& vekt)
     : vecSize(vekt.vecSize),
     vecCapa(vekt.vecCapa)
 {
-    
-
+    dynaArray = new MyString[vecCapa];
+    for (int i = 0; i < vekt.vecSize; ++i)
+    {
+        dynaArray[i] = vekt.dynaArray[i];
+    }
 }
 
 bool myStringVector::empty() const
 {
-    return (vecSize == 0) ? true : false;
+    return vecSize == 0;
 }
 
 std::size_t myStringVector::size() const
@@ -50,11 +51,14 @@ std::size_t myStringVector::capacity() const
     return vecCapa;        
 }
 
-void myStringVector::reserve(int cap)
+void myStringVector::reserve(int newCapacity)
 {
-    vecCapa += cap;
+    if(newCapacity <= vecCapa)
+    {
+        return;
+    }
 
-    MyString* tmpArray = new MyString[vecCapa];
+    MyString* tmpArray = new MyString[newCapacity];
 
     for (int i = 0; i < vecSize; ++i)
     {
@@ -65,67 +69,67 @@ void myStringVector::reserve(int cap)
 
     dynaArray = tmpArray;
 
-    delete[] tmpArray;
+    vecCapa = newCapacity;
 }
 
-void myStringVector::resize(int cap)
+void myStringVector::resize(int newSize)
 {
-    vecCapa = 1;
-    reserve(cap);
+    reserve(newSize);
+    vecSize = newSize;
 }
 
 void myStringVector::clear()
 {
-    vecCapa = 1;
     vecSize = 0;
-
-    MyString* tmpArray = new MyString[vecCapa];
-    tmpArray[vecSize] = "";
-
-    delete[] dynaArray;
-    dynaArray = tmpArray;
-    delete[] tmpArray;
 }
 
 myStringVector::iterator myStringVector::begin() const
 {
-    return beginning;
+    return &dynaArray[0];
 }
 
 myStringVector::iterator myStringVector::end() const
 {
-    return ending;
+    return &dynaArray[vecSize];
 }
 
 void myStringVector::push_back(MyString element)
 {
     if(isFull())
     {
+        ++vecCapa;
         reserve(vecCapa);
-        ++vecCapa; 
     }
 
-    --vecSize;
-    dynaArray[vecSize] = element;
-    ending = &dynaArray[vecSize];
+    dynaArray[vecSize++] = element;
 }
 
 void myStringVector::pop_back()
 {
-    dynaArray[vecSize] = "";
     --vecSize;
-
-    ending = &dynaArray[vecSize];
 }
 
-bool myStringVector::operator== (const myStringVector& vekt) const
+bool myStringVector::operator==(const myStringVector& vekt) const
 {
-    
+    if(vecSize != vekt.vecSize)
+    {
+        return false;
+    }
+
+    for(int i = 0; i < vekt.vecSize; ++i)
+    {
+        if(dynaArray[i] != vekt.dynaArray[i])
+        {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 bool myStringVector::operator>(const myStringVector& vekt) const
 {
-
+    
 }
 
 bool myStringVector::operator<(const myStringVector& vekt) const
@@ -145,7 +149,10 @@ bool myStringVector::operator<=(const myStringVector& vekt) const
 
 void myStringVector::operator= (const myStringVector& vekt)
 {
-
+    for(int i = 0; i < vekt.vecSize; ++i)
+    {
+        dynaArray[i] = vekt.dynaArray[i];
+    }
 }
 
 MyString& myStringVector::operator[] (int loc) const
@@ -155,5 +162,5 @@ MyString& myStringVector::operator[] (int loc) const
 
 myStringVector::~myStringVector()
 {
-    delete[] dynaArray;
+    delete [] dynaArray;
 }
