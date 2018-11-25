@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Computer.hpp"
+#include <iostream>
 
 struct CompuNode
 {
@@ -70,5 +71,18 @@ public:
     CompuNode* head;
     CompuNode* tail;
 
+
+    CompuNode* iterateEach(CompuNode* current)
+    {
+        if(current->next == NULL)
+        {
+            return nullptr;
+        }
+
+        std::cout << current->data.getID() << " - " << current->data.getStudentName() << ", ";
+        iterateEach(current->next);
+
+
+    }
 
 };

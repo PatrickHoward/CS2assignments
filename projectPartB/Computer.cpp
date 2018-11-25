@@ -24,40 +24,38 @@ void Computer::login(int seatLoc_, ioHandiling::LogFile& file)
 
     studentName = ioHandiling::promptString("Please input a name.", 0, 35);
 
-    //And time... Now this can only be set in 15 minute increments...
     do
     {
-    timeUsed = ioHandiling::promptInt("Please input time used in 15 minute increments.", 15, 60);
+        timeUsed = ioHandiling::promptInt("Please input time used in 15 minute increments.", 15, 60);
     } while(timeUsed % 15 != 0);
 
     std::cout << "| Assigned " << studentName << " to user# " << userID << ".\n"; 
 
-    std::ostringstream logLine;
-    logLine << ioHandiling::getTime() << " - I - " << userID << " - " <<  timeUsed << " - " << studentName;
+    writeToLog('I', file);
 
-    std::string output = logLine.str();
+}
 
-    file.writeLine(output);
+void Computer::login(int seatLoc_, int userID_, std::string studentName_, int timeUsed_, ioHandiling::LogFile& file)
+{
+    seatLoc = seatLoc_;
+    userID = userID_;
+    studentName = studentName_;
+    timeUsed = timeUsed_;
+
+    std::cout << "| Assigned " << studentName << " into seat " << seatLoc << " \n";
+
+    writeToLog('I', file);    
 }
 
 void Computer::logout(ioHandiling::LogFile& file)
 {
-    std::cout << "| " << studentName << " has been signed out. \n";
-
-    std::ostringstream logLine;
-    logLine << ioHandiling::getTime() << " - O - " << userID << " - " << timeUsed << " - " << studentName;
-
-    std::string output = logLine.str();
-    file.writeLine(output);
-
     userID = -1;
     studentName = "empty";
     timeUsed = 0;
-}
+    
+    std::cout << "| " << studentName << " has been signed out. \n";
 
-int Computer::makeID()
-{
-    return rand()%99999;
+    writeToLog('O', file);
 }
 
 int Computer::getID() const
@@ -87,4 +85,19 @@ void Computer::assignStudentName(std::string& studentName_)
 void Computer::assignTime(const int timeUsed_)
 {
     timeUsed = timeUsed_;
+}
+
+int Computer::makeID()
+{
+    return rand()%99999;
+}
+
+void Computer::writeToLog(char flag, ioHandiling::LogFile& log)
+{
+    std::ostringstream logLine;
+    logLine << ioHandiling::getTime() << " - " << flag << " - " << userID << " - " <<  timeUsed << " - " << studentName;
+
+    std::string output = logLine.str();
+
+    log.writeLine(output);
 }

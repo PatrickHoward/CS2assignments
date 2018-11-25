@@ -43,6 +43,31 @@ struct Menu
     void modifyLab(int selection, Lab labArray[], ioHandiling::LogFile& file); //Performs the logic of each menu selection.
 
     bool quitLabTrac(ioHandiling::LogFile& file); //Exits the program.
+
+    int promptUserId();
+
+    int promptUniversitySelection();
+
+    void simulateLogin(Lab labArray[], ioHandiling::LogFile& log);
+
+    void simulateLogoff(Lab labArray[], ioHandiling::LogFile& log);
+
+    void searchLab(Lab labArray[], ioHandiling::LogFile& log);
+
+    void displayLab(Lab labArray[], ioHandiling::LogFile& log);
+
+    void recoverUser(Lab labArray[], ioHandiling::LogFile& log);
+};
+
+enum class MenuOption
+{
+    login = 1,
+    logoff = 2,
+    search = 3,
+    displayLab = 4,
+    recover = 5,
+    quit = 6,
+    totalOptions
 };
 
 int main()
@@ -56,7 +81,6 @@ int main()
     instance.startupTimestamp(activityTracker);
 
     bool active = true;
-    int selection = 0;
 
     Lab availableLabs[NUMLABS];
     for(int i = 0; i < NUMLABS; ++i)
@@ -68,38 +92,40 @@ int main()
 
     while(active)
     {
-        selection = ioHandiling::promptInt("Please select a menu item. ", 1, 6);
+        MenuOption selection = (MenuOption)ioHandiling::promptInt("Please select a menu item. ", 1, 6);
+
         switch(selection)
         {
-        //Option 1: Login
-        case 1: instance.modifyLab(1, availableLabs, activityTracker);
-        break;
+            case MenuOption::login:
+                instance.simulateLogin(availableLabs, activityTracker);
+                break;
 
-        //Option 2: Logout
-        case 2: instance.modifyLab(2, availableLabs, activityTracker);
-        break;
+            case MenuOption::logoff:
+                instance.simulateLogoff(availableLabs, activityTracker);
+                break;
 
-        //Option 3: Search
-        case 3: instance.modifyLab(3, availableLabs, activityTracker);
-        break;
+            case MenuOption::search:
+                instance.searchLab(availableLabs, activityTracker);
+                break;
 
-        //Option 4: Display Lab
-        case 4: instance.modifyLab(4, availableLabs, activityTracker);
-        break;
+            case MenuOption::displayLab:
+                instance.displayLab(availableLabs, activityTracker);
+                break;
 
-        //Option 5: Recover User
-        case 5: instance.modifyLab(5, availableLabs, activityTracker);
-        break;
-        //Option 6: Quit program
-        case 6: active = instance.quitLabTrac(activityTracker);
-        break;
+            case MenuOption::recover:
+                instance.recoverUser(availableLabs, activityTracker);
+                break;
+
+            case MenuOption::quit:
+                active = instance.quitLabTrac(activityTracker);
+                break;
         }
     }
 } 
 
 void Menu::printHeader()
 {
-std::cout << "\n\n|-- LabTrac 2 - Student Computer Lab Tracking System --|\n"
+    std::cout << "\n\n|-- LabTrac 2 - Student Computer Lab Tracking System --|\n"
           << "|-- Created by Patrick M. Howard - For education use --|\n|\n";
 
 }
@@ -114,15 +140,20 @@ void Menu::printLabs()
 
 void Menu::printMenu()
 {
-    std::string menuOptions[6] = {"Simulate Login", "Simulate Logoff", 
-                                  "Search", "Display Lab", "Recover User",
-                                  "Quit"};
+    std::string menuOptions[6] =
+    {
+        "Simulate Login",
+        "Simulate Logoff", 
+        "Search",
+        "Display Lab",
+        "Recover User",
+        "Quit"
+    };
 
     std::cout << "|\n| MAIN MENU\n";
     for(int i = 0; i < 6; ++i)
     {
         std::cout << "| " << i+1 << ") " << menuOptions[i] << "\n";
-
     }
 
     std::cout << "|\n"; 
@@ -147,67 +178,63 @@ bool Menu::quitLabTrac(ioHandiling::LogFile& file)
     return false;
 }
 
-void Menu::modifyLab(int selection, Lab labArray[], ioHandiling::LogFile& log)
+int Menu::promptUserId()
 {
-    int uniSelection;
-    int userID;
+    return ioHandiling::promptInt("Please input a user ID.", 1, 99999);
+}
 
-    //Options 1 (Login) and 4 (display lab) ask for
-    
-    if (selection == 2 || selection == 3 || selection == 5)
-    {
-        userID = ioHandiling::promptInt("Please input a user ID.", 1, 99999);   
-    }
-    
-    if(selection == 1 || selection == 4 || selection == 5)
-    { 
-        uniSelection = ioHandiling::promptInt("Please select a lab.", 1, NUMLABS);
-    }
+int Menu::promptUniversitySelection()
+{
+    return ioHandiling::promptInt("Please select a lab.", 1, NUMLABS);
+}
 
-    if(selection == 1)
+void Menu::simulateLogin(Lab labArray[], ioHandiling::LogFile& log)
+{
+    int uniSelection = promptUniversitySelection();
+    std::cout << "| Selected " << UNIVERSITYNAMES[uniSelection+1] << "\n";
+    labArray[uniSelection].simulateLogin(log);
+}
+
+void Menu::simulateLogoff(Lab labArray[], ioHandiling::LogFile& log)
+{
+    int userID = promptUserId();
+    for(int i = 0; i < NUMLABS; i++)
     {
-        std::cout << "| Selected " << UNIVERSITYNAMES[uniSelection+1] << "\n";
-        labArray[uniSelection].simulateLogin(log);
+        labArray[i].simulateLogoff(userID,log);
     }
-    else if(selection == 2)
+}
+
+void Menu::searchLab(Lab labArray[], ioHandiling::LogFile& log)
+{
+    int userID = promptUserId();
+    for(int i = 0; i < NUMLABS; i++)
     {
-        for(int i = 0; i < NUMLABS; i++)
+        labArray[i].searchLab(userID, i+1);
+    }
+}
+
+void Menu::displayLab(Lab labArray[], ioHandiling::LogFile& log)
+{
+
+}
+
+void Menu::recoverUser(Lab labArray[], ioHandiling::LogFile& log)
+{
+    int userID = promptUserId();
+    int recoveredID = -1;
+    std::string currentLine;
+
+    while (recoveredID != userID)
+    {
+        currentLine = log.pullLine(0);
+        recoveredID = stoi(currentLine.substr(27, 5));
+
+        if(currentLine == "eof")
         {
-            labArray[i].simulateLogoff(userID,log);
+            break;
         }
-    }
-    else if(selection == 3)
-    {
-        for(int i = 0; i < NUMLABS; i++)
-        {
-            labArray[i].searchLab(userID, i+1);
-        }
-    }
-    else if(selection == 4)
-    {
-    
-    }
-    else if(selection == 5)
-    {
-        int recoveredID = -1;
-        std::string currentLine;
 
-        while (recoveredID != userID)
-        {
-            currentLine = log.pullLine(0);
-            recoveredID = stoi(currentLine.substr(27, 5));
-
-            if(currentLine == "eof")
-            {
-                break;
-            }
-
-        }
-        
-        
-
-        //return (recoveredID == userID) ? currentLine : "User ID not found.";
     }
 
-    std::cout << "| \n";
+    //return (recoveredID == userID) ? currentLine : "User ID not found."; 
 }

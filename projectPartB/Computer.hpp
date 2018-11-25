@@ -13,13 +13,13 @@ class Computer
     //Po - Void function, Performs the login logic
     void login(int seatLoc_, ioHandiling::LogFile& file);
 
+    //Pr - Takes in everything that a computer object needs to be succssful.
+    //Po - Overloaded form used for the recovery feature.
+    void login(int seatLoc_, int userID_, std::string studentName_, int timeUsed_, ioHandiling::LogFile& log);
+
     //Pr - Nothing
     //Po - Void function, performs the logout logic
     void logout(ioHandiling::LogFile& file);
-    
-    //Pr - Nothing
-    //Po - Returns a pseudorandomized integer from 1 to 99999 
-    int makeID();
 
     //The following three access thier appropriate attributes.
     int getID() const;
@@ -37,6 +37,14 @@ class Computer
     int timeUsed;
 
     int seatLoc;
+
+    //Pr - Nothing
+    //Po - Returns a pseudorandomized integer from 1 to 99999 
+    int makeID();
+
+    //Pr - Takes in a character for the flag, and the logfile stream.
+    //Po - Void function, writes to the logfile's log with information specified in the specification.
+    void writeToLog(char flag, ioHandiling::LogFile& log);
 };
 
 #endif
