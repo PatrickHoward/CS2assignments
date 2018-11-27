@@ -41,6 +41,8 @@ public:
             tail = tempNode;
         }
 
+        tail->data.assignSeatLocation(size);
+
     }
 
     CompuNode* goToNComp(int n)
@@ -67,22 +69,29 @@ public:
         return tmp;
     }
 
-    int size;
-    CompuNode* head;
-    CompuNode* tail;
-
-
-    CompuNode* iterateEach(CompuNode* current)
+    void displayEach(CompuNode* current, int index)
     {
+
         if(current->next == NULL)
         {
-            return nullptr;
+            return;
         }
 
         std::cout << current->data.getID() << " - " << current->data.getStudentName() << ", ";
-        iterateEach(current->next);
+        
+        if(index % 5 == 0)
+        {
+            std::cout << "\n";
+        }
 
+        displayEach(current->next, index + 1);
 
     }
+
+
+
+    int size;
+    CompuNode* head;
+    CompuNode* tail;
 
 };

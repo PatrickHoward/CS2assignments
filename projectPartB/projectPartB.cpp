@@ -30,33 +30,62 @@ std::string logfile = "labTrac_log.txt";
 
 struct Menu
 {
+
+    //Pr - 
+    //Po - 
     void printHeader(); //Prints the header
 
+    //Pr - 
+    //Po - 
     void printLabs(); //Prints the available labs to select from.
 
+    //Pr - 
+    //Po - 
     void printMenu(); //Prints the menu to select from.
 
+    //Pr - 
+    //Po - 
     void startupTimestamp(ioHandiling::LogFile& log); 
 
+    //Pr - 
+    //Po - 
     void printStartup(); //Prints the top three functions, respectively.
 
+    //Pr - 
+    //Po - 
     void modifyLab(int selection, Lab labArray[], ioHandiling::LogFile& file); //Performs the logic of each menu selection.
 
-    bool quitLabTrac(ioHandiling::LogFile& file); //Exits the program.
-
+    //Pr - 
+    //Po - 
     int promptUserId();
 
+    //Pr - 
+    //Po - 
     int promptUniversitySelection();
 
+    //Pr - 
+    //Po - 
     void simulateLogin(Lab labArray[], ioHandiling::LogFile& log);
 
+    //Pr - 
+    //Po - 
     void simulateLogoff(Lab labArray[], ioHandiling::LogFile& log);
 
+    //Pr - 
+    //Po - 
     void searchLab(Lab labArray[], ioHandiling::LogFile& log);
 
-    void displayLab(Lab labArray[], ioHandiling::LogFile& log);
+    //Pr - 
+    //Po - 
+    void displayLab(Lab labArray[]);
 
+    //Pr - Takes in the LabArray and the logFile object.
+    //Po - Recovers a user based on their ID number.
     void recoverUser(Lab labArray[], ioHandiling::LogFile& log);
+
+    //Pr - Takes in a logFile object.
+    //Po - Returns a bool causing the while loop to break, exiting the program. 
+    bool quitLabTrac(ioHandiling::LogFile& file);
 };
 
 enum class MenuOption
@@ -109,7 +138,7 @@ int main()
                 break;
 
             case MenuOption::displayLab:
-                instance.displayLab(availableLabs, activityTracker);
+                instance.displayLab(availableLabs);
                 break;
 
             case MenuOption::recover:
@@ -191,7 +220,7 @@ int Menu::promptUniversitySelection()
 void Menu::simulateLogin(Lab labArray[], ioHandiling::LogFile& log)
 {
     int uniSelection = promptUniversitySelection();
-    std::cout << "| Selected " << UNIVERSITYNAMES[uniSelection+1] << "\n";
+    std::cout << "| Selected " << UNIVERSITYNAMES[uniSelection - 1] << "\n";
     labArray[uniSelection].simulateLogin(log);
 }
 
@@ -213,14 +242,17 @@ void Menu::searchLab(Lab labArray[], ioHandiling::LogFile& log)
     }
 }
 
-void Menu::displayLab(Lab labArray[], ioHandiling::LogFile& log)
-{
-
+void Menu::displayLab(Lab labArray[])
+{ 
+    int uniSelection = promptUniversitySelection();
+    labArray[uniSelection - 1].displayLab();
 }
 
 void Menu::recoverUser(Lab labArray[], ioHandiling::LogFile& log)
 {
     int userID = promptUserId();
+    int uniSelection = promptUniversitySelection();
+
     int recoveredID = -1;
     std::string currentLine;
 
@@ -234,6 +266,11 @@ void Menu::recoverUser(Lab labArray[], ioHandiling::LogFile& log)
             break;
         }
 
+    }
+
+    if (recoveredID == userID)
+    {
+        //Place in first available seat.
     }
 
     //return (recoveredID == userID) ? currentLine : "User ID not found."; 

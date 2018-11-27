@@ -15,9 +15,8 @@ Computer::Computer()
 }
 
 //TODO: Maybe refactor login() and logout() methods to a separate function that creates the logLine?
-void Computer::login(int seatLoc_, ioHandiling::LogFile& file)
+void Computer::login(ioHandiling::LogFile& file)
 {
-    seatLoc = seatLoc_;
     //Call mkID and assign userID.
     userID = makeID();
     std::cout << "| Assigned user to: " << std::setfill('0') << std::setw(5) << userID << "\n" << std::setfill(' ');
@@ -35,9 +34,8 @@ void Computer::login(int seatLoc_, ioHandiling::LogFile& file)
 
 }
 
-void Computer::login(int seatLoc_, int userID_, std::string studentName_, int timeUsed_, ioHandiling::LogFile& file)
+void Computer::login(int userID_, std::string studentName_, int timeUsed_, ioHandiling::LogFile& file)
 {
-    seatLoc = seatLoc_;
     userID = userID_;
     studentName = studentName_;
     timeUsed = timeUsed_;
@@ -82,9 +80,14 @@ void Computer::assignStudentName(std::string& studentName_)
     studentName = studentName_;
 }
 
-void Computer::assignTime(const int timeUsed_)
+void Computer::assignTime(int timeUsed_)
 {
     timeUsed = timeUsed_;
+}
+
+void Computer::assignSeatLocation(int seatLoc_)
+{
+    seatLoc = seatLoc_;
 }
 
 int Computer::makeID()

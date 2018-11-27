@@ -16,8 +16,6 @@ public:
     //Po - Void function, creates a new Lab object with labSize,
     //     labName, and a Linked List of computer objects
     Lab(int labSize_, std::string labName_);
-
-    // Computer search (int userID);
  
     //Pr - Nothing
     //Po - Void funciton, assigns values to a computer object within the linked list.

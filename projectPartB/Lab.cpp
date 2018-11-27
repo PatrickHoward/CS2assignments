@@ -3,8 +3,6 @@
 #include "Lab.hpp"
 #include "ioHandiling.hpp"
 
-
-
 Lab::Lab()
 {
     labSize = 0;
@@ -28,10 +26,19 @@ void Lab::simulateLogin(ioHandiling::LogFile& log)
         return;
     }
     int seatSelection = ioHandiling::promptInt("Please select a seat assignment.", 1, labSize);
+
+
     CompuNode* selectedComp;
 
     selectedComp = compuLab.goToNComp(seatSelection);
-    selectedComp->data.login(seatSelection, log);
+
+    if(selectedComp->data.getID() == -1 )
+    {
+        selectedComp->data.login(log);
+        return;
+    }
+
+    std::cout << "| Seat is already occupied by " << selectedComp->data.getID();
 }
 
 void Lab::simulateLogoff(int userID, ioHandiling::LogFile& log)
@@ -42,6 +49,19 @@ void Lab::simulateLogoff(int userID, ioHandiling::LogFile& log)
     {
         selectedComp->data.logout(log);
     }
+}
+
+void Lab::assignToFirstAvailable(std::string line, ioHandiling::LogFile& log)
+{
+    int userId = stoi(line.substr(27, 5));
+    int timeUsed = stoi(line.substr(35, 2));
+
+    std::string studentName = line.substr(40, line.length() - 40);
+
+    CompuNode* selectedComp;
+    selectedComp = compuLab.findComputerByID(-1);
+
+    selectedComp->data.login(userId, studentName, timeUsed, log);
 }
 
 void Lab::searchLab(int userID, int labLoc)
@@ -60,7 +80,8 @@ void Lab::searchLab(int userID, int labLoc)
 
 void Lab::displayLab()
 {
-    //Loop through every node in the LinkedListß
+    compuLab.displayEach(compuLab.head, 1);
+    std::cout << "\n";
 }
 
 void Lab::assignLabSize(int labSize_)
