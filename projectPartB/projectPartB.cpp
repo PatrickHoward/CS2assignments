@@ -259,19 +259,22 @@ void Menu::recoverUser(Lab labArray[], ioHandiling::LogFile& log)
     while (recoveredID != userID)
     {
         currentLine = log.pullLine(0);
-        recoveredID = stoi(currentLine.substr(27, 5));
+
+        std::cout << currentLine << '\n';
 
         if(currentLine == "eof")
         {
             break;
         }
-
+        if(currentLine.length() > 27)
+        {
+            recoveredID = stoi(currentLine.substr(27, 5));
+        }
     }
 
     if (recoveredID == userID)
     {
-        //Place in first available seat.
+        
+        labArray[uniSelection - 1].assignToFirstAvailable(currentLine, log);
     }
-
-    //return (recoveredID == userID) ? currentLine : "User ID not found."; 
 }

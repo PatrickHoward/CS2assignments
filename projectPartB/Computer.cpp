@@ -46,14 +46,14 @@ void Computer::login(int userID_, std::string studentName_, int timeUsed_, ioHan
 }
 
 void Computer::logout(ioHandiling::LogFile& file)
-{
-    userID = -1;
-    studentName = "empty";
-    timeUsed = 0;
-    
+{   
     std::cout << "| " << studentName << " has been signed out. \n";
 
     writeToLog('O', file);
+
+    userID = -1;
+    studentName = "empty";
+    timeUsed = 0;
 }
 
 int Computer::getID() const

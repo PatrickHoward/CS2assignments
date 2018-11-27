@@ -70,44 +70,27 @@ ioHandiling::LogFile::LogFile(std::string& fileName_)
 }
 
 void ioHandiling::LogFile::writeLine(const std::string& line)
-{   
-    if(!outputFile.is_open())
-    {
-        outputFile.open(fileName, ios::app);
-    }
-
+{
+    outputFile.open(fileName, ios::app);
     outputFile << line << endl;
+    
     outputFile.close();
 }
 
 string ioHandiling::LogFile::pullLine(bool close)
 {
-    if(outputFile.is_open())
-    {
-        outputFile.close();
-        outputFile.open(fileName, ios::in);
-    }
-
-    string currentLine;
+    outputFile.open(fileName, ios::in);
     
+    string currentLine;
+    getline(outputFile, currentLine);
 
-    if (!outputFile.eof())
-    {
-        getline(outputFile, currentLine);
-    }
-    else
+    if(close || outputFile.eof())
     {
         currentLine = "eof";
         outputFile.close();
     }
 
-    if(close)
-    {
-        outputFile.close();
-    }
-
     return currentLine;
-    
 }
 
 ioHandiling::LogFile::~LogFile()
