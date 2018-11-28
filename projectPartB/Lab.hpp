@@ -46,16 +46,16 @@ public:
     //Po - Void fuction, modifier for the labName attribute.
     void assignLabName(std::string labName_);
 
+    //Pr - Lab needs to have been constructued using the default constructor
+    //Po - Void function, adds labSize nodes to compuLab
+    void fillWithCompuNodes();
+
 private:
 
     //Pr - Nothing
     //Po - Returns a boolean based on if the current lab occupancy is full.
     bool isFull();
     
-    //Pr - Lab needs to have been constructued using the default constructor
-    //Po - Void function, adds labSize nodes to compuLab
-    void fillWithCompuNodes();
-
     int labOccupancy;
     int labSize;
     std::string labName;
