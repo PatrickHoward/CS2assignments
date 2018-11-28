@@ -4,6 +4,15 @@
 #include "Lab.hpp"
 #include "ioHandiling.hpp"
 
+Lab::Lab()
+{
+	labName = "uniname";
+	labSize = 0;
+	labOccupancy = 0;
+	
+	fillWithCompuNodes();
+}
+
 Lab::Lab(int labSize_, std::string labName_)
     : labSize(labSize_),
     labName(labName_)
