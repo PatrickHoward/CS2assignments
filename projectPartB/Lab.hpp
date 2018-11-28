@@ -1,8 +1,9 @@
-#ifndef LAB
-#define LAB
+#ifndef LAB_HPP
+#define LAB_HPP
 
 #include <iostream>
 #include <string>
+#include <map>
 
 #include "ioHandiling.hpp"
 #include "LinkedList.hpp"
@@ -25,7 +26,7 @@ public:
     //Po - Void function, resets computer object within the linked list.
     void simulateLogoff(int userID, ioHandiling::LogFile& log);
 
-    //Pr - 
+    //Pr - Takes in a recovered string and a logfile object.
     //Po - Void function, parses the linked list 
     void assignToFirstAvailable(std::string line, ioHandiling::LogFile& log);
 
@@ -33,6 +34,8 @@ public:
     //Po - Void function, accesses and loops through the linked list.
     void displayLab();
 
+    //Pr - 
+    //Po - 
     void searchLab(int userID, int labLoc);
 
     //Pr - A integer labSize_
@@ -48,11 +51,17 @@ public:
     void fillWithCompuNodes();
 
 private:
+
+    //Pr - Nothing
+    //Po - Returns a boolean based on if the current lab occupancy is full.
+    bool isFull();
+
     int labOccupancy;
     int labSize;
     std::string labName;
 
     LinkedList compuLab;
+    std::map<int, Computer> labsLogged;
 };
 
 #endif

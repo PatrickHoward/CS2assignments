@@ -1,14 +1,8 @@
-#include <sstream>
+#include <iostream>
+#include <string>
 
 #include "Lab.hpp"
 #include "ioHandiling.hpp"
-
-Lab::Lab()
-{
-    labSize = 0;
-    labOccupancy = 0;
-    labName = "uni name";
-}
 
 Lab::Lab(int labSize_, std::string labName_)
     : labSize(labSize_),
@@ -20,25 +14,22 @@ Lab::Lab(int labSize_, std::string labName_)
 
 void Lab::simulateLogin(ioHandiling::LogFile& log)
 {
-    if (labOccupancy >= labSize)
+
+    if(isFull())
     {
-        std::cout << "| Lab occupancy is full at this time, please try again later.\n";
         return;
     }
-    int seatSelection = ioHandiling::promptInt("Please select a seat assignment.", 1, labSize);
 
+    ++labOccupancy;
+
+    int seatSelection = ioHandiling::promptInt("Please select a seat assignment.", 1, labSize);
 
     CompuNode* selectedComp;
 
     selectedComp = compuLab.goToNComp(seatSelection);
-
-    if(selectedComp->data.getID() == -1 )
-    {
-        selectedComp->data.login(log);
-        return;
-    }
-
-    std::cout << "| Seat is already occupied by " << selectedComp->data.getID();
+    
+    selectedComp->data.login(log);
+    
 }
 
 void Lab::simulateLogoff(int userID, ioHandiling::LogFile& log)
@@ -49,10 +40,20 @@ void Lab::simulateLogoff(int userID, ioHandiling::LogFile& log)
     {
         selectedComp->data.logout(log);
     }
+
+    --labOccupancy;
+
 }
 
 void Lab::assignToFirstAvailable(std::string line, ioHandiling::LogFile& log)
 {
+    if(isFull())
+    {
+        return;
+    }
+
+    ++labOccupancy;
+
     int userId = stoi(line.substr(27, 5));
     int timeUsed = stoi(line.substr(35, 2));
 
@@ -67,7 +68,6 @@ void Lab::assignToFirstAvailable(std::string line, ioHandiling::LogFile& log)
 void Lab::searchLab(int userID, int labLoc)
 {
     CompuNode* selectedComp;
-    int seatLocation = 0;
 
     selectedComp = compuLab.findComputerByID(userID);
     if(selectedComp->data.getID() == userID)
@@ -104,3 +104,15 @@ void Lab::fillWithCompuNodes()
         compuLab.appendNode(newComputer);
     }
 }
+
+bool Lab::isFull()
+{
+    if (labOccupancy >= labSize)
+    {
+        std::cout << "| !! - Lab occupancy is full at this time, please try again later. - !!\n";
+        return true;
+    }
+
+    return false;
+}
+

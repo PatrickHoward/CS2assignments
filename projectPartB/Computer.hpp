@@ -1,5 +1,5 @@
-#ifndef COMPUTER
-#define COMPUTER
+#ifndef COMPUTER_HPP
+#define COMPUTER_HPP
 
 #include <string>
 #include "ioHandiling.hpp"
@@ -17,7 +17,7 @@ class Computer
     //Po - Overloaded form used for the recovery feature.
     void login(int userID_, std::string studentName_, int timeUsed_, ioHandiling::LogFile& log);
 
-    //Pr - Nothing
+    //Pr - Takes in the logfile object for logging.
     //Po - Void function, performs the logout logic
     void logout(ioHandiling::LogFile& file);
 
@@ -46,6 +46,10 @@ class Computer
     //Pr - Takes in a character for the flag, and the logfile stream.
     //Po - Void function, writes to the logfile's log with information specified in the specification.
     void writeToLog(char flag, ioHandiling::LogFile& log);
+
+    //Pr - 
+    //Po - Returns a bool that checks if the seat is already occupied.
+    bool isOccupied();
 };
 
 #endif

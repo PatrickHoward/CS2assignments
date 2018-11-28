@@ -17,6 +17,11 @@ Computer::Computer()
 //TODO: Maybe refactor login() and logout() methods to a separate function that creates the logLine?
 void Computer::login(ioHandiling::LogFile& file)
 {
+    if(isOccupied())
+    {
+        return;
+    }
+
     //Call mkID and assign userID.
     userID = makeID();
     std::cout << "| Assigned user to: " << std::setfill('0') << std::setw(5) << userID << "\n" << std::setfill(' ');
@@ -36,6 +41,11 @@ void Computer::login(ioHandiling::LogFile& file)
 
 void Computer::login(int userID_, std::string studentName_, int timeUsed_, ioHandiling::LogFile& file)
 {
+    if(isOccupied())
+    {
+        return;
+    }
+
     userID = userID_;
     studentName = studentName_;
     timeUsed = timeUsed_;
@@ -58,6 +68,7 @@ void Computer::logout(ioHandiling::LogFile& file)
 
 int Computer::getID() const
 {
+    
     return userID;
 }
 
@@ -98,9 +109,20 @@ int Computer::makeID()
 void Computer::writeToLog(char flag, ioHandiling::LogFile& log)
 {
     std::ostringstream logLine;
-    logLine << ioHandiling::getTime() << " - " << flag << " - " << userID << " - " <<  timeUsed << " - " << studentName;
+    logLine << ioHandiling::getTime() << " - " << flag << " - " << userID << " - " <<  timeUsed << " - " << studentName << "\n";
 
     std::string output = logLine.str();
 
     log.writeLine(output);
+}
+
+bool Computer::isOccupied()
+{
+    if(userID != -1)
+    {
+        std::cout << "| !! - Seat already occupied, please select another. - !!\n";
+        return true;
+    }
+
+    return false;
 }

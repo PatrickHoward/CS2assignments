@@ -1,5 +1,5 @@
-#ifndef IOHANDILING
-#define IOHANDILING
+#ifndef IOHANDILING_HPP
+#define IOHANDILING_HPP
 
 #include <string>
 #include <iostream>

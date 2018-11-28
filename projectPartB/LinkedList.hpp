@@ -1,4 +1,5 @@
-#pragma once
+#ifndef LINKEDLIST_HPP
+#define LINKEDLIST_HPP
 
 #include "Computer.hpp"
 #include <iostream>
@@ -77,7 +78,11 @@ public:
             return;
         }
 
-        std::cout << current->data.getID() << " - " << current->data.getStudentName() << ", ";
+        std::cout
+            << current->data.getID()
+            << " - "
+            << current->data.getStudentName()
+            << ", ";
         
         if(index % 5 == 0)
         {
@@ -95,3 +100,5 @@ public:
     CompuNode* tail;
 
 };
+
+#endif

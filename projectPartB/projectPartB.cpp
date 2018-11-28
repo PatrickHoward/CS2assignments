@@ -22,9 +22,16 @@ const int NUMLABS = 8;
 const int LABSIZES[NUMLABS] = {19, 15, 24, 33, 4, 17, 55, 37};
 
 //Universities currently under constract.
-const std::string UNIVERSITYNAMES[NUMLABS] = {"The University of Michigan", "The University of Pittsburgh", 
-                                              "Stanford University", "Arizona State University", "North Texas State University", 
-                                              "The University of Alabama, Huntsville", "Princeton University", "Duquesne University"};
+const std::string UNIVERSITYNAMES[NUMLABS] = {
+                                              "The University of Michigan", 
+                                              "The University of Pittsburgh", 
+                                              "Stanford University",
+                                              "Arizona State University", 
+                                              "North Texas State University", 
+                                              "The University of Alabama, Huntsville", 
+                                              "Princeton University", 
+                                              "Duquesne University"
+                                            };
 
 std::string logfile = "labTrac_log.txt";
 
@@ -96,7 +103,6 @@ enum class MenuOption
     displayLab = 4,
     recover = 5,
     quit = 6,
-    totalOptions
 };
 
 int main()
@@ -107,7 +113,7 @@ int main()
     instance.printStartup();
 
     ioHandiling::LogFile activityTracker(logfile);
-    instance.startupTimestamp(activityTracker);
+    //instance.startupTimestamp(activityTracker); //For logging purposes, uncomment for startup.
 
     bool active = true;
 
@@ -203,7 +209,7 @@ void Menu::printStartup()
 bool Menu::quitLabTrac(ioHandiling::LogFile& file)
 {
     std::cout << "|-- Now exiting, goodbye!\n" << "|-- LabTrac 2 - By Patrick M. Howard\n";
-    file.writeLine("Exited LabTrac2 on " + ioHandiling::getTime());
+    //file.writeLine("Exited LabTrac2 on " + ioHandiling::getTime());
     return false;
 }
 
@@ -259,8 +265,6 @@ void Menu::recoverUser(Lab labArray[], ioHandiling::LogFile& log)
     while (recoveredID != userID)
     {
         currentLine = log.pullLine(0);
-
-        std::cout << currentLine << '\n';
 
         if(currentLine == "eof")
         {

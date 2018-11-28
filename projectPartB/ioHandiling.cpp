@@ -42,7 +42,7 @@ string ioHandiling::promptString(std::string question, int minLen, int maxLen)
         std::cout << "| " << question << " ( max " << maxLen << " chars) > ";
         std::getline(std::cin, inputVal);
 
-        if(inputVal.length() <= minLen || inputVal.length() > maxLen)
+        if(inputVal.length() <= (long unsigned)minLen || inputVal.length() > (long unsigned)maxLen)
         {
             std::cout << "| Invalid input, please input less than " << maxLen << ".\n";
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -71,7 +71,11 @@ ioHandiling::LogFile::LogFile(std::string& fileName_)
 
 void ioHandiling::LogFile::writeLine(const std::string& line)
 {
-    outputFile.open(fileName, ios::app);
+    if(!outputFile.is_open())
+    {
+        outputFile.open(fileName, ios::app);
+    }
+
     outputFile << line << endl;
     
     outputFile.close();
@@ -79,8 +83,11 @@ void ioHandiling::LogFile::writeLine(const std::string& line)
 
 string ioHandiling::LogFile::pullLine(bool close)
 {
-    outputFile.open(fileName, ios::in);
-    
+    if(!outputFile.is_open())
+    {
+        outputFile.open(fileName, ios::in);
+    }
+
     string currentLine;
     getline(outputFile, currentLine);
 
