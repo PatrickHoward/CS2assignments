@@ -7,7 +7,8 @@
 #include "Computer.hpp"
 #include "ioHandiling.hpp"
 
-Computer::Computer()
+Computer::Computer(int labLoc_)
+	:labLoc(labLoc_)
 {
   userID = -1;
   studentName = "empty";
@@ -15,11 +16,11 @@ Computer::Computer()
 }
 
 //TODO: Maybe refactor login() and logout() methods to a separate function that creates the logLine?
-void Computer::login(ioHandiling::LogFile& file)
+Computer* Computer::login(ioHandiling::LogFile& file)
 {
     if(isOccupied())
     {
-        return;
+        return nullptr;
     }
 
     //Call mkID and assign userID.
@@ -36,10 +37,11 @@ void Computer::login(ioHandiling::LogFile& file)
     std::cout << "| Assigned " << studentName << " to user# " << userID << ".\n"; 
 
     writeToLog('I', file);
-
+    
+    return this*;
 }
 
-void Computer::login(int userID_, std::string studentName_, int timeUsed_, ioHandiling::LogFile& file)
+Computer* Computer::login(int userID_, std::string studentName_, int timeUsed_, ioHandiling::LogFile& file)
 {
     if(isOccupied())
     {
@@ -52,7 +54,9 @@ void Computer::login(int userID_, std::string studentName_, int timeUsed_, ioHan
 
     std::cout << "| Assigned " << studentName << " into seat " << seatLoc << " \n";
 
-    writeToLog('I', file);    
+    writeToLog('I', file);
+    
+    return this*;
 }
 
 void Computer::logout(ioHandiling::LogFile& file)

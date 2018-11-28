@@ -8,25 +8,21 @@ Lab::Lab()
 {
 	labName = "uniname";
 	labSize = 0;
-	labOccupancy = 0;
-	
-	fillWithCompuNodes();
 }
 
 Lab::Lab(int labSize_, std::string labName_)
     : labSize(labSize_),
     labName(labName_)
 {
-    labOccupancy = 0;
     fillWithCompuNodes();
 }
 
-void Lab::simulateLogin(ioHandiling::LogFile& log)
+Computer* Lab::simulateLogin(ioHandiling::LogFile& log)
 {
 
     if(isFull())
     {
-        return;
+        return nullptr;
     }
 
     ++labOccupancy;
@@ -37,28 +33,32 @@ void Lab::simulateLogin(ioHandiling::LogFile& log)
 
     selectedComp = compuLab.goToNComp(seatSelection);
     
-    selectedComp->data.login(log);
+    Computer* returningComputer;
+    returningComputer = selectedComp->data.login(log);
     
+    return returningComputer;
 }
 
-void Lab::simulateLogoff(int userID, ioHandiling::LogFile& log)
+bool Lab::simulateLogoff(int userID, ioHandiling::LogFile& log)
 {
     CompuNode* selectedComp;
     selectedComp = compuLab.findComputerByID(userID);
     if(selectedComp->data.getID() != -1)
     {
         selectedComp->data.logout(log);
+        --labOccupancy;
+        
+        return true;
     }
-
-    --labOccupancy;
-
+    
+    return false;
 }
 
-void Lab::assignToFirstAvailable(std::string line, ioHandiling::LogFile& log)
+Computer* Lab::assignToFirstAvailable(std::string line, ioHandiling::LogFile& log)
 {
     if(isFull())
     {
-        return;
+        return nullptr;
     }
 
     ++labOccupancy;
@@ -103,9 +103,9 @@ void Lab::assignLabName(std::string labName_)
     labName = labName_;
 }
 
-void Lab::fillWithCompuNodes()
+void Lab::fillWithCompuNodes(int labLoc)
 {
-    Computer newComputer;
+    Computer newComputer(labLoc);
 
     labOccupancy = 0;
     for(int i = 0; i < labSize; i++)

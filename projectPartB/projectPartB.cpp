@@ -11,9 +11,11 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include <map>
 
 #include "ioHandiling.hpp"
 #include "Lab.hpp"
+#include "Computer.hpp"
 
 //Global Constants
 //Number of computer Labs
@@ -72,15 +74,15 @@ struct Menu
 
     //Pr - 
     //Po - 
-    void simulateLogin(Lab labArray[], ioHandiling::LogFile& log);
+    void simulateLogin(Lab labArray[], std::map systemLocations, ioHandiling::LogFile& log);
 
     //Pr - 
     //Po - 
-    void simulateLogoff(Lab labArray[], ioHandiling::LogFile& log);
+    void simulateLogoff(Lab labArray[], std::map systemLocations, ioHandiling::LogFile& log);
 
     //Pr - 
     //Po - 
-    void searchLab(Lab labArray[], ioHandiling::LogFile& log);
+    void searchLab(std::map systemLocations);
 
     //Pr - 
     //Po - 
@@ -88,7 +90,7 @@ struct Menu
 
     //Pr - Takes in the LabArray and the logFile object.
     //Po - Recovers a user based on their ID number.
-    void recoverUser(Lab labArray[], ioHandiling::LogFile& log);
+    void recoverUser(Lab labArray[], std::map systemLocations, ioHandiling::LogFile& log);
 
     //Pr - Takes in a logFile object.
     //Po - Returns a bool causing the while loop to break, exiting the program. 
@@ -112,8 +114,10 @@ int main()
     Menu instance; 
     instance.printStartup();
 
-    ioHandiling::LogFile activityTracker(logfile);
+    ioHandiling::LogFile activityTracker(logfile); //Logfile
     //instance.startupTimestamp(activityTracker); //For logging purposes, uncomment for startup.
+
+	std::map<int, Computer*> computerLocations;
 
     bool active = true;
 
@@ -223,23 +227,36 @@ int Menu::promptUniversitySelection()
     return ioHandiling::promptInt("Please select a lab.", 1, NUMLABS);
 }
 
-void Menu::simulateLogin(Lab labArray[], ioHandiling::LogFile& log)
+void Menu::simulateLogin(Lab labArray[], std::map systemLocations, ioHandiling::LogFile& log)
 {
     int uniSelection = promptUniversitySelection();
+    Computer* compSelection;
     std::cout << "| Selected " << UNIVERSITYNAMES[uniSelection - 1] << "\n";
-    labArray[uniSelection].simulateLogin(log);
-}
-
-void Menu::simulateLogoff(Lab labArray[], ioHandiling::LogFile& log)
-{
-    int userID = promptUserId();
-    for(int i = 0; i < NUMLABS; i++)
+    compSelection = labArray[uniSelection].simulateLogin(log);
+    
+    if(compSelection != nullptr)
     {
-        labArray[i].simulateLogoff(userID,log);
+        systemLocations.insert( std::pair<int, Computer*>(compSelection.getID(), compSelection) )
     }
 }
 
-void Menu::searchLab(Lab labArray[], ioHandiling::LogFile& log)
+void Menu::simulateLogoff(Lab labArray[], std::map systemLocations, ioHandiling::LogFile& log)
+{
+    int userID = promptUserId();
+    bool loggedOutAUser = false;
+    
+    for(int i = 0; i < NUMLABS; i++)
+    {
+        loggedOutAUser = labArray[i].simulateLogoff(userID,log);
+    }
+    
+    if(loggedOutAUser)
+    {
+        systemLocations.erase(userID);
+    }
+}
+
+void Menu::searchLab(std::mapSystemLocations)
 {
     int userID = promptUserId();
     for(int i = 0; i < NUMLABS; i++)

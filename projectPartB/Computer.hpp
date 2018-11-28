@@ -7,15 +7,15 @@
 class Computer
 {
   public:
-    Computer();
+    Computer(int labLoc_);
     
     //Pr - Takes in a LogFile object so a login can be written to labTrac_log.txt.
     //Po - Void function, Performs the login logic
-    void login(ioHandiling::LogFile& file);
+    Computer* login(ioHandiling::LogFile& file);
 
     //Pr - Takes in everything that a computer object needs to be succssful.
     //Po - Overloaded form used for the recovery feature.
-    void login(int userID_, std::string studentName_, int timeUsed_, ioHandiling::LogFile& log);
+    Computer* login(int userID_, std::string studentName_, int timeUsed_, ioHandiling::LogFile& log);
 
     //Pr - Takes in the logfile object for logging.
     //Po - Void function, performs the logout logic
@@ -34,6 +34,7 @@ class Computer
 
   private:
     int userID;
+    int labLoc;
     std::string studentName; //Max 35 chars.
     int timeUsed;
 

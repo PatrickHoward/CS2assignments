@@ -15,26 +15,26 @@ public:
 
     //Pr - Takes in an int labSize_ and a string labName_
     //Po - Void function, creates a new Lab object with labSize,
-    //     labName, and a Linked List of computer objects
+    //     labName, and a Linked List of computer objects.
     Lab(int labSize_, std::string labName_);
  
     //Pr - Nothing
     //Po - Void funciton, assigns values to a computer object within the linked list.
-    void simulateLogin(ioHandiling::LogFile& log);
+    Computer* simulateLogin(ioHandiling::LogFile& log);
 
     //Pr - Asks for the userID
     //Po - Void function, resets computer object within the linked list.
-    void simulateLogoff(int userID, ioHandiling::LogFile& log);
+    bool simulateLogoff(int userID, ioHandiling::LogFile& log);
 
     //Pr - Takes in a recovered string and a logfile object.
     //Po - Void function, parses the linked list 
-    void assignToFirstAvailable(std::string line, ioHandiling::LogFile& log);
+    Computer* assignToFirstAvailable(std::string line, ioHandiling::LogFile& log);
 
     //Pr - Nothing
     //Po - Void function, accesses and loops through the linked list.
     void displayLab();
 
-    //Pr - 
+    //Pr - Searches its local map to find the computer object.
     //Po - 
     void searchLab(int userID, int labLoc);
 
@@ -46,8 +46,8 @@ public:
     //Po - Void fuction, modifier for the labName attribute.
     void assignLabName(std::string labName_);
 
-    //Pr - Lab needs to have been constructued using the default constructor
-    //Po - Void function, adds labSize nodes to compuLab
+    //Pr - Lab needs to have been constructued using the default constructor.
+    //Po - Void function, adds labSize nodes to compuLab and initializes labOccupancy to 0.
     void fillWithCompuNodes();
 
 private:

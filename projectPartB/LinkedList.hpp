@@ -93,7 +93,10 @@ public:
 
     }
 
-
+	~LinkedList()
+	{
+		//TODO - Make sure the linkedlist cleans up. 
+	}
 
     int size;
     CompuNode* head;
