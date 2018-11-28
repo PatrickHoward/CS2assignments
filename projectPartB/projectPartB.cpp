@@ -126,7 +126,7 @@ int main()
     {
         availableLabs[i].assignLabName(UNIVERSITYNAMES[i]);
         availableLabs[i].assignLabSize(LABSIZES[i]);
-        availableLabs[i].fillWithCompuNodes();
+        availableLabs[i].fillWithCompuNodes(i+1);
     }
 
     while(active)
