@@ -1,47 +1,47 @@
 #include <iostream>
 #include <cstdlib>
 #include <string>
-#include <iomanip>
 #include <sstream>
+#include <map>
 
-#include "Computer.hpp"
 #include "ioHandiling.hpp"
+#include "Computer.hpp"
 
-Computer::Computer(int labLoc_)
-	:labLoc(labLoc_)
+Computer::Computer()
 {
   userID = -1;
   studentName = "empty";
   timeUsed = 0;
+  labLoc = 0;
 }
 
-//TODO: Maybe refactor login() and logout() methods to a separate function that creates the logLine?
-Computer* Computer::login(ioHandiling::LogFile& file)
+void Computer::login(ioHandiling::LogFile& file, std::map<int, Computer*>& activeComputers)
 {
     if(isOccupied())
     {
-        return nullptr;
+        return;
     }
 
     //Call mkID and assign userID.
     userID = makeID();
-    std::cout << "| Assigned user to: " << std::setfill('0') << std::setw(5) << userID << "\n" << std::setfill(' ');
+    std::cout << "| Assigned user to: " << ioHandiling::formatUserID(userID) << "\n";
 
     studentName = ioHandiling::promptString("Please input a name.", 0, 35);
 
     do
     {
         timeUsed = ioHandiling::promptInt("Please input time used in 15 minute increments.", 15, 60);
-    } while(timeUsed % 15 != 0);
+    
+    }while(timeUsed % 15 != 0);
 
     std::cout << "| Assigned " << studentName << " to user# " << userID << ".\n"; 
 
+    activeComputers.insert(std::pair<int, Computer*>(userID, this));
     writeToLog('I', file);
-    
-    return this*;
+
 }
 
-Computer* Computer::login(int userID_, std::string studentName_, int timeUsed_, ioHandiling::LogFile& file)
+void Computer::login(int userID_, std::string studentName_, int timeUsed_, ioHandiling::LogFile& file, std::map<int, Computer*>& activeComputers)
 {
     if(isOccupied())
     {
@@ -54,9 +54,9 @@ Computer* Computer::login(int userID_, std::string studentName_, int timeUsed_, 
 
     std::cout << "| Assigned " << studentName << " into seat " << seatLoc << " \n";
 
+    activeComputers.insert(std::pair<int, Computer*>(userID, this));
     writeToLog('I', file);
     
-    return this*;
 }
 
 void Computer::logout(ioHandiling::LogFile& file)
@@ -71,8 +71,7 @@ void Computer::logout(ioHandiling::LogFile& file)
 }
 
 int Computer::getID() const
-{
-    
+{    
     return userID;
 }
 
@@ -84,6 +83,11 @@ std::string Computer::getStudentName() const
 int Computer::getSeatLoc() const
 {
     return seatLoc;
+}
+
+int Computer::getLabLoc() const
+{
+    return labLoc;
 }
 
 void Computer::assignID(const int userID_)
@@ -103,6 +107,11 @@ void Computer::assignTime(int timeUsed_)
 void Computer::assignSeatLocation(int seatLoc_)
 {
     seatLoc = seatLoc_;
+}
+
+void Computer::assignLabLocation(int labLoc_)
+{
+    labLoc = labLoc_;
 }
 
 int Computer::makeID()

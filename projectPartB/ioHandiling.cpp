@@ -2,6 +2,8 @@
 #include <string>
 #include <ctime>
 #include <limits>
+#include <iomanip>
+#include <sstream>
 #include <fstream>
 
 #include "ioHandiling.hpp"
@@ -62,6 +64,14 @@ string ioHandiling::getTime()
     return (string)timeIn;
 }
 
+string ioHandiling::formatUserID(int userID)
+{
+    ostringstream outputString;
+    outputString << setw(5) << setfill('0') << userID;
+
+    return outputString.str();
+}
+
 //Start of logFile class methods
 ioHandiling::LogFile::LogFile(std::string& fileName_)
     : fileName(fileName_)
@@ -107,3 +117,4 @@ ioHandiling::LogFile::~LogFile()
         outputFile.close();
     }
 }
+

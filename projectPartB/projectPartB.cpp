@@ -14,8 +14,8 @@
 #include <map>
 
 #include "ioHandiling.hpp"
+
 #include "Lab.hpp"
-#include "Computer.hpp"
 
 //Global Constants
 //Number of computer Labs
@@ -40,57 +40,52 @@ std::string logfile = "labTrac_log.txt";
 struct Menu
 {
 
-    //Pr - 
-    //Po - 
-    void printHeader(); //Prints the header
+    //Pr - Nothing
+    //Po - Prints the header
+    void printHeader(); 
+    //Pr - Nothing
+    //Po - Prints the available labs to select from.
+    void printLabs();
 
-    //Pr - 
-    //Po - 
-    void printLabs(); //Prints the available labs to select from.
+    //Pr - Nothing
+    //Po - Prints the menu to select from.
+    void printMenu();
 
-    //Pr - 
-    //Po - 
-    void printMenu(); //Prints the menu to select from.
-
-    //Pr - 
-    //Po - 
+    //Pr - A logfile object is needed
+    //Po - Writes a timestamp to the log, this function is used only for testing purposes
     void startupTimestamp(ioHandiling::LogFile& log); 
 
-    //Pr - 
-    //Po - 
-    void printStartup(); //Prints the top three functions, respectively.
+    //Pr - Nothing
+    //Po - Prints the top three functions, respectively.
+    void printStartup();
 
-    //Pr - 
-    //Po - 
-    void modifyLab(int selection, Lab labArray[], ioHandiling::LogFile& file); //Performs the logic of each menu selection.
-
-    //Pr - 
-    //Po - 
+    //Pr - Nothing
+    //Po - Uses ioHandiling::promptInt to get an int within a valid range.
     int promptUserId();
 
-    //Pr - 
-    //Po - 
+    //Pr - Nothing
+    //Po - Uses ioHandiling::promptInt to get an int within a valid range.
     int promptUniversitySelection();
 
-    //Pr - 
-    //Po - 
-    void simulateLogin(Lab labArray[], std::map systemLocations, ioHandiling::LogFile& log);
+    //Pr - Takes the array of labs, log file, and a map
+    //Po - Goes through the UI jargon to add a user to the active system.
+    void simulateLogin(Lab labArray[], ioHandiling::LogFile& log, std::map<int, Computer*>& activeComputers);
 
-    //Pr - 
-    //Po - 
-    void simulateLogoff(Lab labArray[], std::map systemLocations, ioHandiling::LogFile& log);
+    //Pr - Same thing as login
+    //Po - Does the reverse of login.
+    void simulateLogoff(Lab labArray[], ioHandiling::LogFile& log, std::map<int, Computer*>& activeComputers);
 
-    //Pr - 
-    //Po - 
-    void searchLab(std::map systemLocations);
+    //Pr - Takes in the map object.
+    //Po - Searches the map to locate a user.
+    /* EXCEPTION HANDELED -> */void searchLab(std::map<int, Computer*>& activeComputers); /* <- EXCEPTION HANDELED */
 
-    //Pr - 
-    //Po - 
+    //Pr - Takes in an array of lab objects 
+    //Po - Displays 
     void displayLab(Lab labArray[]);
 
     //Pr - Takes in the LabArray and the logFile object.
     //Po - Recovers a user based on their ID number.
-    void recoverUser(Lab labArray[], std::map systemLocations, ioHandiling::LogFile& log);
+    void recoverUser(Lab labArray[], ioHandiling::LogFile& log, std::map<int, Computer*>& activeComputers);
 
     //Pr - Takes in a logFile object.
     //Po - Returns a bool causing the while loop to break, exiting the program. 
@@ -99,6 +94,7 @@ struct Menu
 
 enum class MenuOption
 {
+    reprint = 0,
     login = 1,
     logoff = 2,
     search = 3,
@@ -117,7 +113,7 @@ int main()
     ioHandiling::LogFile activityTracker(logfile); //Logfile
     //instance.startupTimestamp(activityTracker); //For logging purposes, uncomment for startup.
 
-	std::map<int, Computer*> computerLocations;
+	std::map<int, Computer*> activeComputers;
 
     bool active = true;
 
@@ -126,25 +122,29 @@ int main()
     {
         availableLabs[i].assignLabName(UNIVERSITYNAMES[i]);
         availableLabs[i].assignLabSize(LABSIZES[i]);
-        availableLabs[i].fillWithCompuNodes(i+1);
+        availableLabs[i].assignLabLocation(i + 1);
     }
 
     while(active)
     {
-        MenuOption selection = (MenuOption)ioHandiling::promptInt("Please select a menu item. ", 1, 6);
+        MenuOption selection = (MenuOption)ioHandiling::promptInt("Please select a menu item. ", 0, 6);
 
         switch(selection)
         {
+            case MenuOption::reprint:
+                instance.printMenu();
+                break;
+
             case MenuOption::login:
-                instance.simulateLogin(availableLabs, activityTracker);
+                instance.simulateLogin(availableLabs, activityTracker, activeComputers);
                 break;
 
             case MenuOption::logoff:
-                instance.simulateLogoff(availableLabs, activityTracker);
+                instance.simulateLogoff(availableLabs, activityTracker, activeComputers);
                 break;
 
             case MenuOption::search:
-                instance.searchLab(availableLabs, activityTracker);
+                instance.searchLab(activeComputers);
                 break;
 
             case MenuOption::displayLab:
@@ -152,7 +152,7 @@ int main()
                 break;
 
             case MenuOption::recover:
-                instance.recoverUser(availableLabs, activityTracker);
+                instance.recoverUser(availableLabs, activityTracker, activeComputers);
                 break;
 
             case MenuOption::quit:
@@ -196,6 +196,7 @@ void Menu::printMenu()
     }
 
     std::cout << "|\n"; 
+
 }
 
 void Menu::startupTimestamp(ioHandiling::LogFile& file) 
@@ -208,6 +209,7 @@ void Menu::printStartup()
     printHeader();
     printLabs();
     printMenu();
+    std::cout << "| Tip: Select \"0\" to reprint this menu! \n";
 }
 
 bool Menu::quitLabTrac(ioHandiling::LogFile& file)
@@ -227,43 +229,69 @@ int Menu::promptUniversitySelection()
     return ioHandiling::promptInt("Please select a lab.", 1, NUMLABS);
 }
 
-void Menu::simulateLogin(Lab labArray[], std::map systemLocations, ioHandiling::LogFile& log)
+void Menu::simulateLogin(Lab labArray[], ioHandiling::LogFile& log, std::map<int, Computer*>& activeComputers)
 {
     int uniSelection = promptUniversitySelection();
-    Computer* compSelection;
     std::cout << "| Selected " << UNIVERSITYNAMES[uniSelection - 1] << "\n";
-    compSelection = labArray[uniSelection].simulateLogin(log);
-    
-    if(compSelection != nullptr)
-    {
-        systemLocations.insert( std::pair<int, Computer*>(compSelection.getID(), compSelection) )
-    }
+    labArray[uniSelection].simulateLogin(log, activeComputers);
+
+
 }
 
-void Menu::simulateLogoff(Lab labArray[], std::map systemLocations, ioHandiling::LogFile& log)
+void Menu::simulateLogoff(Lab labArray[], ioHandiling::LogFile& log, std::map<int, Computer*>& activeComputers)
 {
     int userID = promptUserId();
     bool loggedOutAUser = false;
     
     for(int i = 0; i < NUMLABS; i++)
     {
-        loggedOutAUser = labArray[i].simulateLogoff(userID,log);
+        loggedOutAUser = labArray[i].simulateLogoff(userID, log, activeComputers);
     }
     
-    if(loggedOutAUser)
-    {
-        systemLocations.erase(userID);
-    }
+    
 }
 
-void Menu::searchLab(std::mapSystemLocations)
+//============================================ EXCEPTION HANDLED
+void Menu::searchLab(std::map<int, Computer*>& activeComputers)
 {
     int userID = promptUserId();
-    for(int i = 0; i < NUMLABS; i++)
+
+    try
     {
-        labArray[i].searchLab(userID, i+1);
+        if(activeComputers.empty())
+        {
+            std::cout << "| !! - No computers are active, please initiate a computer - !!\n";
+            return;
+        }
+
+
+        Computer* selectedComp = activeComputers.find(userID)->second;
+
+        if(selectedComp != nullptr)
+        {
+            std::cout << "| " 
+                    << selectedComp->getStudentName() 
+                    << " in Lab " 
+                    << selectedComp->getLabLoc()
+                    << " at seat " 
+                    << selectedComp->getSeatLoc()
+                    << "\n";
+
+            return;
+        }
+
     }
+    catch(std::bad_alloc e1)
+    {
+
+        std::cout << " !! - Unable to locate userID " << ioHandiling::formatUserID(userID) << " - !!\n";  
+
+    }
+
 }
+//============================================ EXCEPTION HANDLED
+
+
 
 void Menu::displayLab(Lab labArray[])
 { 
@@ -271,7 +299,7 @@ void Menu::displayLab(Lab labArray[])
     labArray[uniSelection - 1].displayLab();
 }
 
-void Menu::recoverUser(Lab labArray[], ioHandiling::LogFile& log)
+void Menu::recoverUser(Lab labArray[], ioHandiling::LogFile& log, std::map<int, Computer*>& activeComputers)
 {
     int userID = promptUserId();
     int uniSelection = promptUniversitySelection();
@@ -296,6 +324,6 @@ void Menu::recoverUser(Lab labArray[], ioHandiling::LogFile& log)
     if (recoveredID == userID)
     {
         
-        labArray[uniSelection - 1].assignToFirstAvailable(currentLine, log);
+        labArray[uniSelection - 1].assignToFirstAvailable(currentLine, log, activeComputers);
     }
 }

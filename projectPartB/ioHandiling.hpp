@@ -4,6 +4,9 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <map>
+
+
 
 namespace ioHandiling
 {
@@ -15,9 +18,13 @@ namespace ioHandiling
     //Po - Returns a string with a length within the accepted range.
     std::string promptString(std::string question, int minLen, int maxLen);
 
-    //Pr - Absolutely nothing, these pre and post conditions are getting old...
+    //Pr - Nothing
     //Po - Returns a string of the time, like the prototype says.
     std::string getTime();
+
+    //Pr - Takes in an int betweeen 0 - 99999, throws an exception if a unexpected number is given.
+    //Po - Returns a formatted string for displaying purposes, so 95 returns 00095.
+    std::string formatUserID(int userID);
     
     class LogFile
     {

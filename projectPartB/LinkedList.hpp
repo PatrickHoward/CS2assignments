@@ -2,6 +2,7 @@
 #define LINKEDLIST_HPP
 
 #include "Computer.hpp"
+#include "ioHandiling.hpp"
 #include <iostream>
 
 struct CompuNode
@@ -21,9 +22,9 @@ public:
         tail = NULL;
     }
 
-    void appendNode(Computer addThis)
+    void appendNode(Computer addThis, int seatLoc, int labLoc)
     {
-        size++;
+        ++size;
 
         CompuNode* tempNode = new CompuNode;
         tempNode->data = addThis;
@@ -42,8 +43,27 @@ public:
             tail = tempNode;
         }
 
-        tail->data.assignSeatLocation(size);
+        tail->data.assignSeatLocation(seatLoc);
+        tail->data.assignLabLocation(labLoc);
 
+    }
+
+    void removeNode(CompuNode* deleteThis)
+    {
+        CompuNode* tempNode = head;
+        while(tempNode->next != deleteThis)
+        {
+            tempNode = tempNode->next;
+
+            if(tempNode == tail->next)
+            {
+                return;
+            }
+
+        }
+
+        tempNode->next = deleteThis->next;
+        delete deleteThis;
     }
 
     CompuNode* goToNComp(int n)
@@ -72,19 +92,28 @@ public:
 
     void displayEach(CompuNode* current, int index)
     {
+        if(current == nullptr)
+        {
+            std::cout << "| !! - No active computers in this lab - !!\n";
+            return;
+        }
 
-        if(current->next == NULL)
+        if(current->next == nullptr)
         {
             return;
         }
 
         std::cout
-            << current->data.getID()
+            << ioHandiling::formatUserID(current->data.getID())
             << " - "
             << current->data.getStudentName()
             << ", ";
         
-        if(index % 5 == 0)
+        if(index == 1)
+        {
+
+        }
+        else if(index % 5 == 0)
         {
             std::cout << "\n";
         }
@@ -93,9 +122,37 @@ public:
 
     }
 
+    void reIndex(CompuNode* current, int index)
+    {
+        if(current == nullptr)
+        {
+            std::cout << "| !! - No active computers in this lab - !!\n";
+        }
+
+        if(current->next == nullptr)
+        {
+            return;
+        }
+
+        current->data.assignSeatLocation(index);
+        reIndex(current->next, index + 1);
+    }
+
 	~LinkedList()
 	{
-		//TODO - Make sure the linkedlist cleans up. 
+        CompuNode* temp = head;
+
+        while(temp != nullptr)
+        {
+            if(temp == nullptr)
+            {
+                break;
+            }
+            CompuNode* toDelete = temp;
+            temp = temp->next;
+
+            delete toDelete;
+        }
 	}
 
     int size;
